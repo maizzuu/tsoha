@@ -17,4 +17,4 @@ Ominaisuuksia:
   * myös tarjoajan nimi näkyy
 * Kun työntekijä klikkaa jotain tarjousta, avautuu lomake, jolla voi ehdottaa vaihtoa/ilmoittaa ottavansa vuoron/tarjota vuoroa
 * Jos tarjouksen tehneelle kelpaa ehdotus, hän voi hyväksyä sen, jolloin vuoronvaihto siirtyy esimiehen hyväksyttäväksi
-* Hyväksyntää odottava tarjous katoaa muiden työntekijöiden näkyvistä
+* Esimiehen hyväksyntää odottava tarjous katoaa muiden työntekijöiden näkyvistä
