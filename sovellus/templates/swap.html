@@ -1,0 +1,17 @@
+<title>Etusivu</title>
+<h1>Tervetuloa vuoronvaihtosovellukseen</h1>
+<hr>
+<br>
+Vaihdetaan vuoroja:
+<hr>
+{% for offer in offers %}
+{{ offer[0] }}
+{{ offer[1] }}
+{{ offer[2] }}
+{{ offer[3] }}
+{{ offer[4] }}
+<hr>
+{% endfor %}
+<br>
+<a href="/new_take">Ehdota vaihtoa</a>
+<hr>

@@ -1,15 +1,24 @@
 <title>Etusivu</title>
-<h1>Tervetuloa vuoronvaihtosovellukseen</h1>
+<h1>Tervetuloa vuoronvaihtosovellukseen!</h1>
 <hr>
+<p>
+{% if session.username %}
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
+<a href="/logout">Kirjaudu ulos</a>
 <br>
-Otetaan vastaan vuoroja:
-<hr>
-{% for offer in offers %}
-{{ offer[0] }}
-{{ offer[1] }}
-<hr>
-{% endfor %}
+<a href="/give">Katso otettavat vuorot</a>
 <br>
-<a href="/new">Pyydä vuoroa</a>
-<hr>
-
+<a href="/take">Katso annettavat vuorot</a>
+<br>
+<a href="/swap">Katso vaihdettavat vuorot</a>
+{% else %}
+<form action="/login" method="POST">
+<p>Tunnus:<br>
+<input type="text" name="username"></p>
+<p>Salasana:<br>
+<input type="password" name="password"></p>
+<input type="submit" value="Kirjaudu">
+</form>
+<a href="/create">Luo käyttäjä</a>
+{% endif %}
+ 
