@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://maijapajumaa1@localhost"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
-app.secret_key = getenv("SECRET_KEY")
+app.secret_key = "a0b66cfd66233307e11b6c30633acc5c"
 
 @app.route("/")
 def index():
