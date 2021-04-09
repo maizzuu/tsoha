@@ -1,29 +1,50 @@
-<title>Etusivu</title>
+<style>
+table, td, th {
+    text-align: center;
+    border-collapse: collapse
+  }
+  
+td, th {
+    width: 75;
+    height: 50;
+    border-bottom: 1px solid rgb(0, 0, 0);
+  }
+
+th {
+    background-color: lightskyblue;
+}
+
+tr:nth-child(odd) {
+    background-color: rgb(187, 233, 248);
+}
+</style>
+
+
+<title>Vaihdettavat vuorot</title>
 <h1>Vuoronvaihtosovellus</h1>
 <hr>
-<br>
-Vaihdetaan vuoroja:
+<h2>Vaihdetaan vuoroja:</h2>
 <hr>
 <table>
     <tr>
-        <th style="width: 75px;">Päivämäärä</th>
-        <th style="width: 75px;">Alkaa</th>
-        <th style="width: 75;">Loppuu</th>
-        <th style="width: 75;">Työpiste</th>
-        <th style="width: 300px;">Kommentti</th>
+        <th>Päivämäärä</th>
+        <th>Alkaa</th>
+        <th>Loppuu</th>
+        <th>Työpiste</th>
+        <th style="width: 500px;">Kommentti</th>
     </tr>
     {% for offer in offers %}
     <tr>
-        <td style="width: 75;">{{ offer[0] }}</td>
-        <td style="width: 75;">{{ offer[1] }}</td>
-        <td style="width: 75;">{{ offer[2] }}</td>
-        <td style="width: 75;">{{ offer[3] }}</td>
-        <td style="width: 300px;">{{ offer[4] }}</td>
+        <td>{{ offer[0] }}</td>
+        <td>{{ offer[1] }}</td>
+        <td>{{ offer[2] }}</td>
+        <td>{{ offer[3] }}</td>
+        <td style="width: 500px;">{{ offer[4] }}</td>
     </tr>
     {% endfor %}
 </table>
 <br>
-<a href="/new_take">Ehdota vaihtoa</a>
+<a href="/new_swap">Ehdota vaihtoa</a>
 <br>
 <a href="/">Palaa etusivulle</a>
 <hr>

@@ -1,14 +1,42 @@
-<title>Etusivu</title>
+<style>
+    table, td, th {
+        text-align: center;
+        border-collapse: collapse
+      }
+      
+    td, th {
+        width: 75;
+        height: 50;
+        border-bottom: 1px solid rgb(0, 0, 0);
+      }
+    
+    th {
+        background-color: lightskyblue;
+    }
+    
+    tr:nth-child(odd) {
+        background-color: rgb(187, 233, 248);
+    }
+</style>
+    
+
+<title>Otettavat vuorot</title>
 <h1>Vuoronvaihtosovellus</h1>
 <hr>
-<br>
-Otetaan vastaan vuoroja:
+<h2>Otetaan vastaan vuoroja:</h2>
 <hr>
-{% for offer in offers %}
-{{ offer[0] }}
-{{ offer[1] }}
-<hr>
-{% endfor %}
+<table>
+    <tr>
+        <th>Päivämäärä</th>
+        <th style="width: 500px">Kommentti</th>
+    </tr>
+    {% for offer in offers %}
+    <tr>
+        <td>{{ offer[0] }}</td>
+        <td style="width: 500px">{{ offer[1] }}</td>
+    </tr>
+    {% endfor %}
+</table>
 <br>
 <a href="/new_give">Pyydä vuoroa</a>
 <br>

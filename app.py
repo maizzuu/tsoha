@@ -114,7 +114,7 @@ def swap():
 def new_swap():
 	return render_template("new_swap.html")
 
-@app.route("/send_swap")
+@app.route("/send_swap", methods=["POST"])
 def send_swap():
 	date = request.form["date"]
 	start_time = request.form["start_time"]
