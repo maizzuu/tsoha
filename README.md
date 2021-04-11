@@ -22,4 +22,4 @@ Ominaisuuksia:
 ## Testaaminen Herokussa
 https://tsoha-vuoronvaihtosovellus.herokuapp.com  
 * Sovellusta voi tällä hetkellä testata Herokussa luomalla uuden käyttäjän.  
-* 
+* Sovelluksessa voi ehdottaa vuoronvaihtoa, antaa vuoron pois tai pyytää vuoroa, ja katsoa näitä tarjouksia.
