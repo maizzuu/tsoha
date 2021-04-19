@@ -3,13 +3,14 @@ from flask import render_template, redirect, request, session
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
 from werkzeug.security import check_password_hash, generate_password_hash
+from adequacy import check_date, check_password, check_time check_username
 
 # MUISTA MUUTTAA SECRET KEY JA DB_URL ENNEN HEROKUUN PUSHAAMISTA!!!!!!
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://maijapajumaa1@localhost"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
-app.secret_key = getenv("SECRET_KEY")
+app.secret_key = "a0b66cfd66233307e11b6c30633acc5c"
 
 @app.route("/")
 def index():
@@ -35,7 +36,16 @@ def login():
 @app.route("/new_login", methods=["POST"])
 def new_login():
 	username = request.form["username"]
+	if not check_username(username):
+		return render_template("wrong_username.html")
 	password = request.form["password"]
+	if not check_password(password):
+		return render_template("wrong_password.html")
+	sql = "SELECT username FROM users WHERE username=:username"
+	result = db.session.execute(sql, {"username":username})
+	users = result.fetchall()
+	if len(users) > 0:
+		return render_template("username_taken.html")
 	hash_value = generate_password_hash(password)
 	sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
 	db.session.execute(sql, {"username":username, "password":hash_value})
@@ -68,6 +78,8 @@ def new_give():
 @app.route("/send_give", methods=["POST"])
 def send_give():
 	date = request.form["date"]
+	if not check_date(date):
+		return render_template("incorrect_date_give.html")
 	comment = request.form["comment"]
 	sql = "INSERT INTO give (date, comment) VALUES (:date, :comment)"
 	db.session.execute(sql, {"date":date, "comment":comment})
@@ -91,8 +103,14 @@ def new_take():
 @app.route("/send_take", methods=["POST"])
 def send_take():
 	date = request.form["date"]
+	if not check_date(date):
+		return render_template("incorrect_date_take.html")
 	start_time = request.form["start_time"]
+	if not check_time(time):
+		return render_template("incorrect_start_time_take.html")
 	end_time = request.form["end_time"]
+	if not check_time(time):
+		return render_template("incorrect_end_time_swap.html")
 	post = request.form["post"]
 	comment = request.form["comment"]
 	sql = "INSERT INTO take (date, start_time, end_time, post, comment) VALUES (:date, :start_time, :end_time, :post, :comment);"
@@ -117,8 +135,14 @@ def new_swap():
 @app.route("/send_swap", methods=["POST"])
 def send_swap():
 	date = request.form["date"]
+	if not check_date(date):
+		return render_template("incorrect_date_swap.html")
 	start_time = request.form["start_time"]
+	if not check_time(time):
+		return render_template("incorrect_start_time_swap.html")
 	end_time = request.form["end_time"]
+	if not check_time(time):
+		return render_template("incorrect_end_time_swap.html")
 	post = request.form["post"]
 	comment = request.form["comment"]
 	sql = "INSERT INTO swap (date, start_time, end_time, post, comment) VALUES (:date, :start_time, :end_time, :post, :comment);"
