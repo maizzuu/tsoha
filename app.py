@@ -95,24 +95,88 @@ def offers():
 def waiting():
 	db.create_all()
 	#give
-	result = db.session.execute("SELECT g.date, go.offer, g.username, go.username FROM give_offers go, give g WHERE go.give_id = g.id AND go.admin_visibility = 1 ORDER BY g.date")
+	result = db.session.execute("SELECT g.date, go.offer, g.username, go.username, g.id FROM give_offers go, give g WHERE go.give_id = g.id AND go.admin_visibility = 1 ORDER BY g.date")
 	offers_give = result.fetchall()
 	#take
-	result = db.session.execute("SELECT t.date, t.start_time, t.end_time, t.post, t.username, tko.username FROM take t, take_offers tko WHERE t.id=tko.take_id AND tko.admin_visibility = 1 ORDER BY t.date")
+	result = db.session.execute("SELECT t.date, t.start_time, t.end_time, t.post, t.username, tko.username, t.id FROM take t, take_offers tko WHERE t.id=tko.take_id AND tko.admin_visibility = 1 ORDER BY t.date")
 	offers_take = result.fetchall()
 	#swap
-	result = db.session.execute("SELECT s.date, s.start_time, s.end_time, s.post, s.username, so.date, so.offer, so.username  FROM swap s, swap_offers so WHERE s.id=so.swap_id AND so.admin_visibility = 1 ORDER BY s.date")
+	result = db.session.execute("SELECT s.date, s.start_time, s.end_time, s.post, s.username, so.date, so.offer, so.username, s.id FROM swap s, swap_offers so WHERE s.id=so.swap_id AND so.admin_visibility = 1 ORDER BY s.date")
 	offers_swap = result.fetchall()
 	return render_template("waiting.html", offers_give=offers_give, offers_take=offers_take, offers_swap=offers_swap)
+
+@app.route("/confirm", methods=["POST"])
+def confirm():
+	form = request.form["id"]
+	form = form.split(",")
+	id_value = form[0]
+	action = form[1]
+	name = form[2]
+	table = request.form["table"]
+	if table == "give":
+		if action == "confirm":
+			sql = "DELETE FROM give_offers WHERE give_id = :id"
+			db.session.execute(sql, {"id":id_value})
+			db.session.commit()
+			sql = "DELETE FROM give WHERE id = :id"
+			db.session.execute(sql, {"id":id_value})
+			db.session.commit()
+		if action == "decline":
+			sql = "UPDATE give SET visibility = 1 WHERE id = :id"
+			db.session.execute(sql, {"id":id_value})
+			db.session.commit()
+			sql = "DELETE FROM give_offers WHERE give_id = :id AND username = :name"
+			db.session.execute(sql, {"id":id_value, "name":name})
+			db.session.commit()
+			sql = "UPDATE give_offers SET user_visibility = 1 WHERE give_id = :id"
+			db.session.execute(sql, {"id":id_value})
+			db.session.commit()
+	elif table == "take":
+		if action == "confirm":
+			sql = "DELETE FROM take_offers WHERE take_id = :id"
+			db.session.execute(sql, {"id":id_value})
+			db.session.commit()
+			sql = "DELETE FROM take WHERE id = :id"
+			db.session.execute(sql, {"id":id_value})
+			db.session.commit()
+		if action == "decline":
+			sql = "UPDATE take SET visibility = 1 WHERE id = :id"
+			db.session.execute(sql, {"id":id_value})
+			db.session.commit()
+			sql = "DELETE FROM take_offers WHERE take_id = :id AND username = :name"
+			db.session.execute(sql, {"id":id_value, "name":name})
+			db.session.commit()
+			sql = "UPDATE take_offers SET user_visibility = 1 WHERE take_id = :id"
+			db.session.execute(sql, {"id":id_value})
+			db.session.commit()
+	elif table == "swap":
+		if action == "confirm":
+			sql = "DELETE FROM swap_offers WHERE swap_id = :id"
+			db.session.execute(sql, {"id":id_value})
+			db.session.commit()
+			sql = "DELETE FROM swap WHERE id = :id"
+			db.session.execute(sql, {"id":id_value})
+			db.session.commit()
+		if action == "decline":
+			sql = "UPDATE swap SET visibility = 1 WHERE id = :id"
+			db.session.execute(sql, {"id":id_value})
+			db.session.commit()
+			sql = "DELETE FROM swap_offers WHERE swap_id = :id AND username = :name"
+			db.session.execute(sql, {"id":id_value, "name":name})
+			db.session.commit()
+			sql = "UPDATE swap_offers SET user_visibility = 1 WHERE swap_id = :id"
+			db.session.execute(sql, {"id":id_value})
+			db.session.commit()
+	return redirect("/waiting")
 
 # otetaan vastaan
 
 @app.route("/give")
 def give():
 	db.create_all()
-	result = db.session.execute("SELECT id, date, comment, username FROM give ORDER BY date")
+	result = db.session.execute("SELECT id, date, comment, username FROM give WHERE visibility = 1 ORDER BY date")
 	offers = result.fetchall()
-	result = db.session.execute("SELECT id FROM give ORDER BY id")
+	result = db.session.execute("SELECT id FROM give WHERE visibility = 1 ORDER BY id")
 	id_list = result.fetchall()
 	today = date.today()
 	return render_template("give.html", offers=offers, id_list=id_list, today=today)
@@ -127,29 +191,46 @@ def send_give():
 	comment = request.form["comment"]
 	if len(date) == 0:
 		return render_template("empty_give.html")
-	sql = "INSERT INTO give (date, comment, username) VALUES (:date, :comment, :username)"
+	sql = "INSERT INTO give (date, comment, username, visibility) VALUES (:date, :comment, :username, 1)"
 	db.session.execute(sql, {"date":date, "comment":comment, "username":session["username"]})
 	db.session.commit()
 	return redirect("/give")
 
 @app.route("/offer_give", methods=["POST"])
 def offer_give():
-	id = request.form["id"]
+	give_id = request.form["id"]
 	pvm = request.form["pvm"]
 	offer = request.form["offer"]
 	sql = 'INSERT INTO give_offers (give_id, offer, username, date, admin_visibility, user_visibility) VALUES (:id, :offer, :username, :pvm, 0, 1)'
-	db.session.execute(sql, {"id":id, "offer":offer, "username":session["username"], "pvm":pvm})
+	db.session.execute(sql, {"id":give_id, "offer":offer, "username":session["username"], "pvm":pvm})
 	db.session.commit()
 	return redirect("/give")
+
+@app.route("/accept_give", methods=["POST"])
+def accept_give():
+	ok = request.form["ok"]
+	ok = ok.split(",")
+	give_id = ok[0]
+	name = ok[1]
+	sql = "UPDATE give_offers SET user_visibility = 0, admin_visibility = 1 WHERE give_id = :id AND username = :name"
+	db.session.execute(sql, {"id":give_id, "name":name})
+	db.session.commit()
+	sql = "UPDATE give_offers SET user_visibility = 0 WHERE give_id = :id"
+	db.session.execute(sql, {"id":give_id})
+	db.session.commit()
+	sql = "UPDATE give SET visibility = 0 WHERE id = :give_id"
+	db.session.execute(sql, {"give_id":give_id})
+	db.session.commit()
+	return redirect("/offers")
 
 # annetaan pois
 
 @app.route("/take")
 def take():
 	db.create_all()
-	result = db.session.execute("SELECT id, date, start_time, end_time, post, comment, username FROM take ORDER BY id")
+	result = db.session.execute("SELECT id, date, start_time, end_time, post, comment, username FROM take WHERE visibility = 1 ORDER BY date")
 	offers = result.fetchall()
-	result = db.session.execute("SELECT id FROM take ORDER BY id")
+	result = db.session.execute("SELECT id FROM take WHERE visibility = 1 ORDER BY id")
 	id_list = result.fetchall()
 	return render_template("take.html", offers=offers, id_list=id_list)
 
@@ -170,28 +251,44 @@ def send_take():
 		return render_template("incorrect_end_time_take.html")
 	post = request.form["post"]
 	comment = request.form["comment"]
-	sql = "INSERT INTO take (date, start_time, end_time, post, comment, username) VALUES (:date, :start_time, :end_time, :post, :comment, :username);"
+	sql = "INSERT INTO take (date, start_time, end_time, post, comment, username, visibility) VALUES (:date, :start_time, :end_time, :post, :comment, :username, 1);"
 	db.session.execute(sql, {"date":date, "start_time":start_time, "end_time":end_time, "post":post, "comment":comment, "username":session["username"]})
 	db.session.commit()
 	return redirect("/take")
 
 @app.route("/offer_take", methods=["POST"])
 def offer_take():
-	id = request.form["id"]
+	take_id = request.form["id"]
 	sql = 'INSERT INTO take_offers (take_id, username, admin_visibility, user_visibility) VALUES (:id, :username, 0, 1)'
-	db.session.execute(sql, {"id":id, "username":session["username"]})
+	db.session.execute(sql, {"id":take_id, "username":session["username"]})
 	db.session.commit()
 	return redirect("/take")
 
+@app.route("/accept_take", methods=["POST"])
+def accept_take():
+	ok = request.form["ok"]
+	ok = ok.split(",")
+	take_id = ok[0]
+	name = ok[1]
+	sql = "UPDATE take_offers SET user_visibility = 0, admin_visibility = 1 WHERE take_id = :id AND username = :name"
+	db.session.execute(sql, {"id":take_id, "name":name})
+	db.session.commit()
+	sql = "UPDATE take_offers SET user_visibility = 0 WHERE take_id = :id"
+	db.session.execute(sql, {"id":take_id})
+	db.session.commit()
+	sql = "UPDATE take SET visibility = 0 WHERE id = :take_id"
+	db.session.execute(sql, {"take_id":take_id})
+	db.session.commit()
+	return redirect("/offers")
 
 # vaihdetaan
 
 @app.route("/swap")
 def swap():
 	db.create_all()
-	result = db.session.execute("SELECT id, date, start_time, end_time, post, comment, username FROM swap ORDER BY id")
+	result = db.session.execute("SELECT id, date, start_time, end_time, post, comment, username FROM swap WHERE visibility = 1 ORDER BY date")
 	offers = result.fetchall()
-	result = db.session.execute("SELECT id FROM swap ORDER BY id")
+	result = db.session.execute("SELECT id FROM swap WHERE visibility = 1 ORDER BY id")
 	id_list = result.fetchall()
 	today = date.today()
 	return render_template("swap.html", offers=offers, id_list=id_list, today=today)
@@ -213,17 +310,34 @@ def send_swap():
 		return render_template("incorrect_end_time_swap.html")
 	post = request.form["post"]
 	comment = request.form["comment"]
-	sql = "INSERT INTO swap (date, start_time, end_time, post, comment, username) VALUES (:date, :start_time, :end_time, :post, :comment, :username);"
+	sql = "INSERT INTO swap (date, start_time, end_time, post, comment, username, visibility) VALUES (:date, :start_time, :end_time, :post, :comment, :username, 1);"
 	db.session.execute(sql, {"date":date, "start_time":start_time, "end_time":end_time, "post":post, "comment":comment, "username":session["username"]})
 	db.session.commit()
 	return redirect("/swap")
 
 @app.route("/offer_swap", methods=["POST"])
 def offer_swap():
-	id = request.form["id"]
+	swap_id = request.form["id"]
 	pvm = request.form["pvm"]
 	offer = request.form["offer"]
 	sql = 'INSERT INTO swap_offers (swap_id, username, offer, date, admin_visibility, user_visibility) VALUES (:id, :username, :offer, :pvm, 0, 1)'
-	db.session.execute(sql, {"id":id, "username":session["username"], "offer":offer, "pvm":pvm})
+	db.session.execute(sql, {"id":swap_id, "username":session["username"], "offer":offer, "pvm":pvm})
 	db.session.commit()
 	return redirect("/swap")
+
+@app.route("/accept_swap", methods=["POST"])
+def accept_swap():
+	ok = request.form["ok"]
+	ok = ok.split(",")
+	swap_id = ok[0]
+	name = ok[1]
+	sql = "UPDATE swap_offers SET user_visibility = 0, admin_visibility = 1 WHERE swap_id = :id AND username = :name"
+	db.session.execute(sql, {"id":swap_id, "name":name})
+	db.session.commit()
+	sql = "UPDATE swap_offers SET user_visibility = 0 WHERE swap_id = :id"
+	db.session.execute(sql, {"id":swap_id})
+	db.session.commit()
+	sql = "UPDATE swap SET visibility = 0 WHERE id = :swap_id"
+	db.session.execute(sql, {"swap_id":swap_id})
+	db.session.commit()
+	return redirect("/offers")

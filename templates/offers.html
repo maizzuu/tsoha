@@ -46,10 +46,14 @@
         <td>{{ offer[3] }}</td>
         <td>{{ offer[4] }}</td>
         <td>{{ offer[5] }}</td>
-        <td><input type="radio" name="ok" value="{{ offer[0] }}"></td>
+<form action="/accept_give" method="POST">
+        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[5] }}"></td>
     </tr>
     {% endfor %}
 </table>
+<br>
+<input type="submit" value="Hyväksy">
+</form>
 <br>
 <h2>Annetaan vuoro:</h2>
 <table>
@@ -76,10 +80,14 @@
         <td>{{ offer[4] }}</td>
         <td style="width: 400px">{{ offer[5] }}</td>
         <td>{{ offer[6] }}</td>
-        <td><input type="radio" name="ok" value="{{ offer[0] }}"></td>
+<form action="/accept_take" method="POST">
+        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[6] }}"></td>
     </tr>
     {% endfor %}
 </table>
+<br>
+<input type="submit" value="Hyväksy">
+</form>
 <br>
 <h2>Vaihdetaan vuoro:</h2>
 <table>
@@ -110,11 +118,16 @@
         <td>{{ offer[6] }}</td>
         <td>{{ offer[7] }}</td>
         <td>{{ offer[8] }}</td>
-        <td><input type="radio" name="ok" value="{{ offer[0] }}"></td>
+<form action="/accept_swap" method="POST">
+        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[8] }}"></td>
     </tr>
     {% endfor %}
 </table>
+<br>
+<input type="submit" value="Hyväksy">
+</form>
 {% endif %}
+<br>
 <br>
 <a href="/">Palaa etusivulle</a>
 <hr>

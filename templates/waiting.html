@@ -31,6 +31,8 @@
         <th>Ehdotus</th>
         <th>Ottaja</th>
         <th>Antaja</th>
+        <th>Hyväksy</th>
+        <th>Hylkää</th>
     </tr>
     {% for offer in offers_give %}
     <tr>
@@ -38,9 +40,16 @@
         <td style="width: 300px">{{ offer[1] }}</td>
         <td style="width: 200px">{{ offer[2] }}</td>
         <td style="width: 200px">{{ offer[3] }}</td>
+<form action="/confirm" method="POST">
+        <td><input type="radio" name="id" value="{{ offer[4] }},confirm,{{ offer[3] }}"></td>
+        <td><input type="radio" name="id" value="{{ offer[4] }},decline,{{ offer[3] }}"></td>
     </tr>
     {% endfor %}
 </table>
+<br>
+<input type="hidden" name="table" value="give">
+<input type="submit" value="Vahvista">
+</form>
 <br>
 <br>
 <h3>Vuoro otetaan toiselta:</h3>
@@ -52,6 +61,8 @@
         <th>Työpiste</th>
         <th>Antaja</th>
         <th>Ottaja</th>
+        <th>Hyväksy</th>
+        <th>Hylkää</th>
     </tr>
     {% for offer in offers_take %}
     <tr>
@@ -61,9 +72,16 @@
         <td style="width: 200px">{{ offer[3] }}</td>
         <td style="width: 200px">{{ offer[4] }}</td>
         <td style="width: 200px">{{ offer[5] }}</td>
+<form action="/confirm" method="POST">
+        <td><input type="radio" name="id" value="{{ offer[6] }},confirm,{{ offer[5] }}"></td>
+        <td><input type="radio" name="id" value="{{ offer[6] }},decline,{{ offer[5] }}"></td>
     </tr>
     {% endfor %}
 </table>
+<br>
+<input type="hidden" name="table" value="take">
+<input type="submit" value="Vahvista">
+</form>
 <br>
 <br>
 <h3>Vuorot vaihdetaan keskenään:</h3>
@@ -77,6 +95,8 @@
         <th>Päivämäärä 2</th>
         <th>Ehdotus</th>
         <th>Vaihtaja 2</th>
+        <th>Hyväksy</th>
+        <th>Hylkää</th>
     </tr>
     {% for offer in offers_swap %}
     <tr>
@@ -88,7 +108,15 @@
         <td>{{ offer[5] }}</td>
         <td style="width: 300px">{{ offer[6] }}</td>
         <td style="width: 200px">{{ offer[7] }}</td>
+<form action="/confirm" method="POST">
+        <td><input type="radio" name="id" value="{{ offer[8] }},confirm,{{ offer[7] }}"></td>
+        <td><input type="radio" name="id" value="{{ offer[8] }},decline,{{ offer[7] }}"></td>
     </tr>
     {% endfor %}
 </table>
-<a href="/">Palaa</a>
+<br>
+<input type="hidden" name="table" value="swap">
+<input type="submit" value="Vahvista">
+<br>
+<br>
+<a href="/">Palaa etusivulle</a>
