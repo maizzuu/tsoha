@@ -1,4 +1,4 @@
-CREATE TABLE users (id SERIAL PRIMARY KEY, username TEXT, password TEXT, type TEXT);
+CREATE TABLE users (id SERIAL PRIMARY KEY, username TEXT UNIQUE, password TEXT, type TEXT);
 CREATE TABLE swap (id SERIAL PRIMARY KEY, date TEXT, start_time TEXT, end_time TEXT, post TEXT, comment TEXT, username TEXT REFERENCES users(username), visibility INTEGER);
 CREATE TABLE take (id SERIAL PRIMARY KEY, date TEXT, start_time TEXT, end_time TEXT, post TEXT, comment TEXT, username TEXT REFERENCES users(username), visibility INTEGER);
 CREATE TABLE give (id SERIAL PRIMARY KEY, date TEXT, comment TEXT, username TEXT REFERENCES users(username), visibility INTEGER);
