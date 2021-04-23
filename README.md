@@ -10,6 +10,7 @@ Ominaisuuksia:
   2. Vuoro halutaan antaa kokonaan pois.
   3. Otetaan vuoro vastaan jollekin päivälle.
 * Esimies näkee kirjautuessaan hyväksyntää odottavat vaihdot.
+* Eri sivujen oikeasta yläkulmasta voi itse tehdä "ilmoituksen" esim. vuorosta josta haluaa eroon.
 * Tarjouksista näkyy sovelluksessa erilaisia tietoja sen mukaan mitä tarjotaan:
   * vaihto / pois: pvm, alkamisaika, loppumisaika, työpiste
   * otetaan: pvm
