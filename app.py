@@ -68,11 +68,26 @@ def new_login():
 @app.route("/logout")
 def logout():
 	del session["username"]
+	del session["user_type"]
 	return redirect("/")
 
 @app.route("/create")
 def create():
 	return render_template("create.html")
+
+@app.route("/offers")
+def offers():
+	username = session["username"]
+	sql = "SELECT g.id, g.date, g.comment, go.date, go.offer, go.username FROM give g, give_offers go WHERE g.id=go.give_id AND g.username = :username AND go.user_visibility=1"
+	result = db.session.execute(sql, {"username":username})
+	give_offers = result.fetchall()
+	sql = "SELECT t.id, t.date, t.start_time, t.end_time, t.post, t.comment, tko.username FROM take t, take_offers tko WHERE t.id=tko.take_id AND t.username = :username AND tko.user_visibility=1"
+	result = db.session.execute(sql, {"username":username})
+	take_offers = result.fetchall()
+	sql = "SELECT s.id, s.date, s.start_time, s.end_time, s.post, s.comment, so.date, so.offer, so.username FROM swap s, swap_offers so WHERE s.id=so.swap_id AND s.username = :username AND so.user_visibility=1"
+	result = db.session.execute(sql, {"username":username})
+	swap_offers = result.fetchall()
+	return render_template("offers.html", give_offers=give_offers, take_offers=take_offers, swap_offers=swap_offers)
 
 # esimies
 
@@ -80,13 +95,13 @@ def create():
 def waiting():
 	db.create_all()
 	#give
-	result = db.session.execute("SELECT g.date, go.offer, g.username, go.username FROM give_offers go, give g WHERE go.give_id = g.id ORDER BY g.date")
+	result = db.session.execute("SELECT g.date, go.offer, g.username, go.username FROM give_offers go, give g WHERE go.give_id = g.id AND go.admin_visibility = 1 ORDER BY g.date")
 	offers_give = result.fetchall()
 	#take
-	result = db.session.execute("SELECT t.date, t.start_time, t.end_time, t.post, t.username, tko.username FROM take t, take_offers tko WHERE t.id=tko.take_id")
+	result = db.session.execute("SELECT t.date, t.start_time, t.end_time, t.post, t.username, tko.username FROM take t, take_offers tko WHERE t.id=tko.take_id AND tko.admin_visibility = 1 ORDER BY t.date")
 	offers_take = result.fetchall()
 	#swap
-	result = db.session.execute("SELECT s.date, s.start_time, s.end_time, s.post, s.username, so.date, so.offer, so.username  FROM swap s, swap_offers so WHERE s.id=so.swap_id")
+	result = db.session.execute("SELECT s.date, s.start_time, s.end_time, s.post, s.username, so.date, so.offer, so.username  FROM swap s, swap_offers so WHERE s.id=so.swap_id AND so.admin_visibility = 1 ORDER BY s.date")
 	offers_swap = result.fetchall()
 	return render_template("waiting.html", offers_give=offers_give, offers_take=offers_take, offers_swap=offers_swap)
 
@@ -122,7 +137,7 @@ def offer_give():
 	id = request.form["id"]
 	pvm = request.form["pvm"]
 	offer = request.form["offer"]
-	sql = 'INSERT INTO give_offers (give_id, offer, username, date) VALUES (:id, :offer, :username, :pvm)'
+	sql = 'INSERT INTO give_offers (give_id, offer, username, date, admin_visibility, user_visibility) VALUES (:id, :offer, :username, :pvm, 0, 1)'
 	db.session.execute(sql, {"id":id, "offer":offer, "username":session["username"], "pvm":pvm})
 	db.session.commit()
 	return redirect("/give")
@@ -163,7 +178,7 @@ def send_take():
 @app.route("/offer_take", methods=["POST"])
 def offer_take():
 	id = request.form["id"]
-	sql = 'INSERT INTO take_offers (take_id, username) VALUES (:id, :username)'
+	sql = 'INSERT INTO take_offers (take_id, username, admin_visibility, user_visibility) VALUES (:id, :username, 0, 1)'
 	db.session.execute(sql, {"id":id, "username":session["username"]})
 	db.session.commit()
 	return redirect("/take")
@@ -208,7 +223,7 @@ def offer_swap():
 	id = request.form["id"]
 	pvm = request.form["pvm"]
 	offer = request.form["offer"]
-	sql = 'INSERT INTO swap_offers (swap_id, username, offer, date) VALUES (:id, :username, :offer, :pvm)'
+	sql = 'INSERT INTO swap_offers (swap_id, username, offer, date, admin_visibility, user_visibility) VALUES (:id, :username, :offer, :pvm, 0, 1)'
 	db.session.execute(sql, {"id":id, "username":session["username"], "offer":offer, "pvm":pvm})
 	db.session.commit()
 	return redirect("/swap")
