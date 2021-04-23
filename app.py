@@ -9,10 +9,10 @@ from datetime import date
 
 # MUISTA MUUTTAA SECRET KEY JA DB_URL ENNEN HEROKUUN PUSHAAMISTA!!!!!!
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://maijapajumaa1@localhost"
+app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
-app.secret_key = "a0b66cfd66233307e11b6c30633acc5c"
+app.secret_key = getenv("SECRET_KEY")
 
 @app.route("/")
 def index():
