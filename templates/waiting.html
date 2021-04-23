@@ -1,0 +1,94 @@
+<style>
+    table, td, th {
+        text-align: center;
+        border-collapse: collapse
+      }
+      
+    td, th {
+        width: 95;
+        height: 50;
+        border-bottom: 1px solid rgb(0, 0, 0);
+      }
+    
+    th {
+        background-color: lightskyblue;
+    }
+    
+    tr:nth-child(odd) {
+        background-color: rgb(187, 233, 248);
+    }
+</style>
+
+<title>Hyväksyttävät vaihdot</title>
+<h1>Vuoronvaihtosovellus</h1>
+<hr>
+<h2>Hyväksyntää odottavat vuorot:</h2>
+<hr>
+<h3>Vuoro annetaan toiselle:</h3>
+<table>
+    <tr>
+        <th>Päivämäärä</th>
+        <th>Ehdotus</th>
+        <th>Ottaja</th>
+        <th>Antaja</th>
+    </tr>
+    {% for offer in offers_give %}
+    <tr>
+        <td>{{ offer[0] }}</td>
+        <td style="width: 300px">{{ offer[1] }}</td>
+        <td style="width: 200px">{{ offer[2] }}</td>
+        <td style="width: 200px">{{ offer[3] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<br>
+<h3>Vuoro otetaan toiselta:</h3>
+<table>
+    <tr>
+        <th>Päivämäärä</th>
+        <th>Alkamisaika</th>
+        <th>Loppumisaika</th>
+        <th>Työpiste</th>
+        <th>Antaja</th>
+        <th>Ottaja</th>
+    </tr>
+    {% for offer in offers_take %}
+    <tr>
+        <td>{{ offer[0] }}</td>
+        <td style="width: 300px">{{ offer[1] }}</td>
+        <td style="width: 200px">{{ offer[2] }}</td>
+        <td style="width: 200px">{{ offer[3] }}</td>
+        <td style="width: 200px">{{ offer[4] }}</td>
+        <td style="width: 200px">{{ offer[5] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<br>
+<h3>Vuorot vaihdetaan keskenään:</h3>
+<table>
+    <tr>
+        <th>Päivämäärä 1</th>
+        <th>Alkamisaika</th>
+        <th>Loppumisaika</th>
+        <th>Työpiste</th>
+        <th>Vaihtaja 1</th>
+        <th>Päivämäärä 2</th>
+        <th>Ehdotus</th>
+        <th>Vaihtaja 2</th>
+    </tr>
+    {% for offer in offers_swap %}
+    <tr>
+        <td>{{ offer[0] }}</td>
+        <td>{{ offer[1] }}</td>
+        <td>{{ offer[2] }}</td>
+        <td>{{ offer[3] }}</td>
+        <td style="width: 200px">{{ offer[4] }}</td>
+        <td>{{ offer[5] }}</td>
+        <td style="width: 300px">{{ offer[6] }}</td>
+        <td style="width: 200px">{{ offer[7] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="/">Palaa</a>

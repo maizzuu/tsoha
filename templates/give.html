@@ -17,28 +17,48 @@
     tr:nth-child(odd) {
         background-color: rgb(187, 233, 248);
     }
+    p.add {
+        text-align: right;
+    }
 </style>
-    
 
 <title>Otettavat vuorot</title>
 <h1>Vuoronvaihtosovellus</h1>
 <hr>
+<p class="add"> <a href="/new_give">Pyydä vuoroa</a></p>
 <h2>Otetaan vastaan vuoroja:</h2>
-<hr>
 <table>
     <tr>
+        <th>id</th>
         <th>Päivämäärä</th>
         <th style="width: 500px">Kommentti</th>
+        <th style="width: 300px">Työntekijä</th>
     </tr>
     {% for offer in offers %}
     <tr>
         <td>{{ offer[0] }}</td>
-        <td style="width: 500px">{{ offer[1] }}</td>
+        <td>{{ offer[1] }}</td>
+        <td style="width: 500px">{{ offer[2] }}</td>
+        <td style="width: 300px">{{ offer[3] }}</td>
     </tr>
     {% endfor %}
 </table>
 <br>
-<a href="/new_give">Pyydä vuoroa</a>
+<h2>Anna vuoro:</h2>
+Valitse haluamaasi ehdotusta vastaava id.
+<br>
+<form action="/offer_give" method="POST">
+{% for id in id_list %}
+<input type="radio" name="id" value="{{ id[0] }}"> {{ id[0] }}<br>
+{% endfor %}
+Päivämäärä:<br>
+<input type="date" id="pvm" name="pvm" min="{{ today }}"> Jos käytät safaria, anna päivämäärä muodossa vvvv-mm-dd.
+<br>
+Vuoro jonka haluat antaa:<br>
+<input type="text" name="offer"> <br>
+<input type="submit" value="Lähetä">
+</form>
+
 <br>
 <a href="/">Palaa etusivulle</a>
 <hr>

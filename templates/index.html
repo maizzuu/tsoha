@@ -7,7 +7,7 @@
     <h1>Vuoronvaihtosovellus</h1>
     <hr>
     <p>
-    {% if session.username %}
+    {% if session.username and session.user_type == "user" %}
     <p>Olet kirjautunut nimellä {{ session.username }}</p>
     <nav>
         <ul>
@@ -16,6 +16,15 @@
             <li><a href="/swap">Katso vaihdettavat vuorot</a></li>
         </ul>
     </nav>
+    <br>
+    <br>
+    <a href="/logout">Kirjaudu ulos</a>
+
+    {% elif session.username and session.user_type == "admin" %}
+    <p>Olet kirjautunut nimellä {{ session.username }}</p>
+    <p>
+        Hyväksyntää odottavat vaihdot löytyvät <a href="/waiting"> täältä</a>
+    </p>
     <br>
     <br>
     <a href="/logout">Kirjaudu ulos</a>

@@ -17,21 +17,26 @@ th {
 tr:nth-child(odd) {
     background-color: rgb(187, 233, 248);
 }
+p.add {
+        text-align: right;
+    }
 </style>
 
 
 <title>Vaihdettavat vuorot</title>
 <h1>Vuoronvaihtosovellus</h1>
 <hr>
+<p class="add"> <a href="/new_swap">Vaihda vuoro</a> </p>
 <h2>Vaihdetaan vuoroja:</h2>
-<hr>
 <table>
     <tr>
+        <th>id</th>
         <th>Päivämäärä</th>
         <th>Alkaa</th>
         <th>Loppuu</th>
         <th>Työpiste</th>
         <th style="width: 500px;">Kommentti</th>
+        <th style="width: 300px">Työntekijä</th>
     </tr>
     {% for offer in offers %}
     <tr>
@@ -39,12 +44,26 @@ tr:nth-child(odd) {
         <td>{{ offer[1] }}</td>
         <td>{{ offer[2] }}</td>
         <td>{{ offer[3] }}</td>
-        <td style="width: 500px;">{{ offer[4] }}</td>
+        <td>{{ offer[4] }}</td>
+        <td style="width: 500px;">{{ offer[5] }}</td>
+        <td style="width: 300px">{{ offer[6] }}</td>
     </tr>
     {% endfor %}
 </table>
 <br>
-<a href="/new_swap">Ehdota vaihtoa</a>
+<h2>Ehdota vaihtoa:</h2>
+Valitse haluamaasi vaihtoa vastaava id.
+<br>
+<form action="/offer_swap" method="POST">
+{% for id in id_list %}
+<input type="radio" name="id" value="{{ id[0] }}"> {{ id[0] }}<br>
+{% endfor %}
+Päivämäärä: <br>
+<input type="date" id="pvm" name="pvm" min="{{ today }}"> Jos käytät safaria, anna päivämäärä muodossa vvvv-mm-dd. <br>
+Vuoro: <br>
+<input type="text" name="offer"> <br>
+<input type="submit" value="Lähetä">
+</form>
 <br>
 <a href="/">Palaa etusivulle</a>
 <hr>
