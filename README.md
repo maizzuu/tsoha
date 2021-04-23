@@ -21,5 +21,6 @@ Ominaisuuksia:
 
 ## Testaaminen Herokussa
 https://tsoha-vuoronvaihtosovellus.herokuapp.com  
+* Sovellus toimii parhaiten muilla selaimilla kuin Safarilla tai Internet Explorerilla
 * Sovellusta voi tällä hetkellä testata Herokussa luomalla uuden käyttäjän.  
 * Sovelluksessa on käytössä kaikki listatut toiminnallisuudet.
