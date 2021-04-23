@@ -1,8 +1,7 @@
-CREATE TABLE swap (id SERIAL PRIMARY KEY, date TEXT, start_time TEXT, end_time TEXT, post TEXT, comment TEXT);
-CREATE TABLE take (id SERIAL PRIMARY KEY, date TEXT, start_time TEXT, end_time TEXT, post TEXT, comment TEXT);
-CREATE TABLE give (id SERIAL PRIMARY KEY, date TEXT, comment TEXT);
-CREATE TABLE users (id SERIAL PRIMARY KEY, username TEXT, password TEXT);
-INSERT INTO swap (date, start_time, end_time, post, comment) VALUES ('20.4.', '5.00', '13.00', '2', 'vaihtuu samalle päivälle iltavuoroon');
-INSERT INTO take (date, start_time, end_time, post, comment) VALUES ('15.4.', '13.30', '20,00', 'BLC', 'ramppiluvat tarvitaan');
-INSERT INTO give (date, comment) VALUES ('12.4.', 'iltavuoro');
-INSERT INTO users (username, password) VALUES ('Maija', pbkdf2:sha256:150000$iz6PzzEY$be436c8f09eb0341873344686a51711d837547f311f5be2811c0e5c5726ac742);
+CREATE TABLE swap (id SERIAL PRIMARY KEY, date TEXT, start_time TEXT, end_time TEXT, post TEXT, comment TEXT, username TEXT REFERENCES users(username), visibility INTEGER);
+CREATE TABLE take (id SERIAL PRIMARY KEY, date TEXT, start_time TEXT, end_time TEXT, post TEXT, comment TEXT, username TEXT REFERENCES users(username), visibility INTEGER);
+CREATE TABLE give (id SERIAL PRIMARY KEY, date TEXT, comment TEXT, username TEXT REFERENCES users(username), visibility INTEGER);
+CREATE TABLE users (id SERIAL PRIMARY KEY, username TEXT, password TEXT, type TEXT);
+CREATE TABLE give_offers (id SERIAL PRIMARY KEY, give_id INTEGER REFERENCES give(id), offer TEXT, username TEXT REFERENCES users(username), date DATE, admin_visibility INTEGER, user_visibility INTEGER);
+CREATE TABLE take_offers (id SERIAL PRIMARY KEY, take_id INTEGER REFERENCES take(id), username TEXT REFERENCES users(username), admin_visibility INTEGER, user_visibility INTEGER);
+CREATE TABLE swap_offers (id SERIAL PRIMARY KEY, swap_id INTEGER REFERENCES swap(id), username TEXT REFERENCES users(username), offer TEXT, date DATE, admin_visibility INTEGER, user_visibility INTEGER);
