@@ -104,7 +104,7 @@ def give():
 
 @app.route("/new_give")
 def new_give():
-	return render_template("new_give.html")
+	return render_template("new_give.html", today=date.today())
 
 @app.route("/send_give", methods=["POST"])
 def send_give():
@@ -140,7 +140,7 @@ def take():
 
 @app.route("/new_take")
 def new_take():
-	return render_template("new_take.html")
+	return render_template("new_take.html", today=date.today())
 
 @app.route("/send_take", methods=["POST"])
 def send_take():
@@ -149,8 +149,6 @@ def send_take():
 	end_time = request.form["end_time"]
 	if len(date) == 0 or len(start_time) == 0 or len(end_time) == 0:
 		return render_template("empty_take.html")
-	if not check_date(date):
-		return render_template("incorrect_date_take.html")
 	if not check_time(start_time):
 		return render_template("incorrect_start_time_take.html")
 	if not check_time(end_time):
@@ -185,7 +183,7 @@ def swap():
 
 @app.route("/new_swap")
 def new_swap():
-	return render_template("new_swap.html")
+	return render_template("new_swap.html", today=date.today())
 
 @app.route("/send_swap", methods=["POST"])
 def send_swap():
@@ -194,8 +192,6 @@ def send_swap():
 	end_time = request.form["end_time"]
 	if len(date) == 0 or len(start_time) == 0 or len(end_time) == 0:
 		return render_template("empty_swap.html")
-	if not check_date(date):
-		return render_template("incorrect_date_swap.html")
 	if not check_time(start_time):
 		return render_template("incorrect_start_time_swap.html")
 	if not check_time(end_time):

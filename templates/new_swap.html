@@ -1,7 +1,7 @@
 <title>Ehdota vaihtoa</title>
 Pakolliset kohdat merkitty tähdellä. <br>
 <form action="/send_swap" method="POST">
-    Päivämäärä: * <input type="text" name="date" value="" size="20"> Muodossa pp.kk.
+    Päivämäärä: * <input type="date" id="date" name="date" min="{{ today }}"> Jos käytät safaria, syötä päivämäärä muodossa vvvv-mm-dd.
     <br>
     Alkamisaika: * <input type="text" name="start_time" value="" size="20"> Muodossa hh:mm
     <br>
