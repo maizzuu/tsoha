@@ -15,11 +15,11 @@ Ominaisuuksia:
   * otetaan: pvm
   * lisäksi jokaisella tarjouksella on vapaamuotoinen lisätietokohta, johon työntekijä voi kirjoittaa lisätietoa tarjouksesta
   * myös tarjoajan nimi näkyy
-* Kun työntekijä klikkaa jotain tarjousta, avautuu lomake, jolla voi ehdottaa vaihtoa/ilmoittaa ottavansa vuoron/tarjota vuoroa
+* Vaihtoa / vuoron ottamista / vuoron antamista voi ehdottaa valitsemalla sivun alareunan listasta kyseisen tarjouksen id:n ja täyttämällä lomakkeen.
 * Jos tarjouksen tehneelle kelpaa ehdotus, hän voi hyväksyä sen, jolloin vuoronvaihto siirtyy esimiehen hyväksyttäväksi
 * Esimiehen hyväksyntää odottava tarjous katoaa muiden työntekijöiden näkyvistä
 
 ## Testaaminen Herokussa
 https://tsoha-vuoronvaihtosovellus.herokuapp.com  
 * Sovellusta voi tällä hetkellä testata Herokussa luomalla uuden käyttäjän.  
-* Sovelluksessa voi ehdottaa vuoronvaihtoa, antaa vuoron pois tai pyytää vuoroa, ja katsoa näitä tarjouksia.
+* Sovelluksessa on käytössä kaikki listatut toiminnallisuudet.
