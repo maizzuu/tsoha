@@ -1,19 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-top: 6px;
+        margin-bottom: 16px;
+    }
+    .container {
+        background-color: #f1f1f1;
+        padding: 20px;
+    }
+    #message {
+        display:none;
+        background: #f1f1f1;
+        color: #000;
+        position: relative;
+        padding: 20px;
+        margin-top: 10px;
+    }
+    #message p {
+        padding: 10px 35px;
+        font-size: 18px;
+    }
+    #name_message {
+        display:none;
+        background: #f1f1f1;
+        color: #000;
+        position: relative;
+        padding: 20px;
+        margin-top: 10px;
+    }
+    #name_message p {
+        padding: 10px 35px;
+        font-size: 18px;
+    }
+    .valid {
+        color: green;
+    }
+    .valid:before {
+        position: relative;
+        left: -35px;
+        content: "✔";
+    }
+    .invalid {
+        color: red;
+    }
+    .invalid:before {
+        position: relative;
+        left: -35px;
+        content: "✖";
+    }
+    .h1 {
+        position: relative;
+        background-color: darkseagreen;
+
+    }
+</style>
 <title>Luo uusi käyttäjä</title>
-<h1>Luo uusi käyttäjä</h1>
+</head>
+<body>
+<h1>Vuoronvaihtosovellus</h1>
 <hr>
-<form action="/new_login" method="POST">
-<p>Tunnus:<br>
-<input type="text" name="username"> Käyttäjätunnuksen tulee olla vähintään neljä merkkiä pitkä. Se saa sisältää isoja ja pieniä kirjaimia a-z ja numeroita 0-9.
-</p>
-<p>Salasana:<br>
-<input type="password" name="password"> Salasanan tulee olla vähintään neljä merkkiä pitkä, ja sen tulee sisältää ainakin yksi numero. Se saa sisältää isoja ja pieniä kirjaimia a-z ja numeroita 0-9.
-</p>
-<p>Käyttäjän tyyppi:<br>
-    <br>
-    <input type="radio" name="user_type" value="user"> Työntekijä
-    <input type="radio" name="user_type" value="admin"> Esimies
-</p>
-<input type="submit" value="Luo tunnus">
-</form>
-<br>
+<h2>Luo uusi käyttäjä</h2>
+
+<div class="container">
+    <form action="/new_login" method="POST">
+        <label for="username">Käyttäjänimi</label>
+        <input type="text" id="username" name="username" required pattern="[A-Za-z].{4,}">
+        <br>
+        <label for="password">Salasana</label>
+        <input type="password" id="password" name="password" pattern="(?=.*[a-z])(?=.*\d).{4,}">
+        Käyttäjän tyyppi:<br>
+        <br>
+        Työntekijä <br>
+        <input type="radio" name="user_type" value="user"> 
+        Esimies <br>
+        <input type="radio" name="user_type" value="admin"> 
+        </p>
+        <input type="submit" value="Luo tunnus">
+    </form>
+</div>
+
+<div id="name_message">
+    <h3>Käyttäjänimen tulee olla vähintään neljä merkkiä pitkä</h3>
+    <p id="name_length" class="invalid">Vähintään neljä merkkiä</p>
+</div>
+
+<div id="message">
+    <h3>Salsanan <b>tulee</b> sisältää seuraavat:</h3>
+    <p id="letter" class="invalid">Pieni kirjain</p>
+    <p id="number" class="invalid">Ainakin yksi numero</p>
+    <p id="length" class="invalid">Vähintään neljä merkkiä</p>
+</div>
+
+<script>
+    var input = document.getElementById("password")
+    var letter = document.getElementById("letter")
+    var number = document.getElementById("number")
+    var length = document.getElementById("length")
+    var usr = document.getElementById("username")
+    var name_length = document.getElementById("name_length")
+
+    input.onfocus = function() {
+        document.getElementById("message").style.display = "block";
+    }
+
+    usr.onfocus = function() {
+        document.getElementById("name_message").style.display = "block";
+    }
+    
+    input.onblur = function() {
+        document.getElementById("message").style.display = "none";
+    }
+
+    usr.onblur = function() {
+        document.getElementById("name_message").style.display = "none";
+    }
+
+    usr.onkeyup = function() {
+        if(usr.value.length >= 4) {
+            name_length.classList.remove("invalid");
+            name_length.classList.add("valid");
+        } else {
+            name_length.classList.remove("valid");
+            name_length.classList.add("invalid");
+        }
+    }
+    input.onkeyup = function() {
+        var lowerCaseLetters = /[a-z]/g;
+        if(input.value.match(lowerCaseLetters)) {
+            letter.classList.remove("invalid");
+            letter.classList.add("valid");
+        } else {
+            letter.classList.remove("valid");
+            letter.classList.add("invalid");
+        }
+    
+        var numbers = /[0-9]/g;
+        if(input.value.match(numbers)) {
+            number.classList.remove("invalid");
+            number.classList.add("valid");
+        } else {
+            number.classList.remove("valid");
+            number.classList.add("invalid");
+        }
+
+        if(input.value.length >= 4) {
+            length.classList.remove("invalid");
+            length.classList.add("valid");
+        } else {
+            length.classList.remove("valid");
+            length.classList.add("invalid");
+        }
+    }
+</script>
 <a href="/">Peruuta</a>
+</body>
+</html>
