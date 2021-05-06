@@ -19,6 +19,12 @@
     }
 </style>
 
+<script>
+    function confirm_offer() {
+        confirm("Oletko varma että haluat hyväksyä tämän vuoronvaihdon?");
+    }   
+</script>
+
 <title>Hyväksyttävät vaihdot</title>
 <h1>Vuoronvaihtosovellus</h1>
 <hr>
@@ -48,7 +54,7 @@
 </table>
 <br>
 <input type="hidden" name="table" value="give">
-<input type="submit" value="Vahvista">
+<button type="submit" onclick="confirm_offer()">Vahvista</button>
 </form>
 <br>
 <br>
@@ -80,7 +86,7 @@
 </table>
 <br>
 <input type="hidden" name="table" value="take">
-<input type="submit" value="Vahvista">
+<button type="submit" onclick="confirm_offer()">Vahvista</button>
 </form>
 <br>
 <br>
@@ -116,7 +122,8 @@
 </table>
 <br>
 <input type="hidden" name="table" value="swap">
-<input type="submit" value="Vahvista">
+<button type="submit" onclick="confirm_offer()">Vahvista</button>
+</form>
 <br>
 <br>
 <a href="/">Palaa etusivulle</a>

@@ -21,6 +21,11 @@ p.add {
         text-align: right;
     }
 </style>
+<script>
+    function offer_sent() {
+        alert("Ehdotus lähetetty!");
+    }
+</script>
 
 
 <title>Vaihdettavat vuorot</title>
@@ -62,8 +67,20 @@ Päivämäärä: <br>
 <input type="date" id="pvm" name="pvm" min="{{ today }}"> Jos käytät safaria, anna päivämäärä muodossa vvvv-mm-dd. <br>
 Vuoro: <br>
 <input type="text" name="offer"> <br>
-<input type="submit" value="Lähetä">
+<br>
+<button type="submit" onclick="offer_sent()">Lähetä</button>
 </form>
+<br>
+
+<h3>Poista ehdotus:</h3>
+<form action="/delete_swap" method="POST">
+{% for offer in your_offers %}
+<input type="checkbox" name="drop" value="{{ offer[0] }}">{{ offer[0] }} <br>
+{% endfor %}
+<br>
+<button type="submit" onclick="confirm_drop()">Poista</button>
+</form>
+
 <br>
 <a href="/">Palaa etusivulle</a>
 <hr>

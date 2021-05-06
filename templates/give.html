@@ -21,6 +21,15 @@
         text-align: right;
     }
 </style>
+<script>
+    function offer_sent() {
+        alert("Ehdotus lähetetty!");
+    }
+
+    function confirm_drop() {
+        confirm("Oletko varma että haluat poistaa pyynnön?");
+    }
+</script>
 
 <title>Otettavat vuorot</title>
 <h1>Vuoronvaihtosovellus</h1>
@@ -52,11 +61,22 @@ Valitse haluamaasi ehdotusta vastaava id.
 <input type="radio" name="id" value="{{ id[0] }}"> {{ id[0] }}<br>
 {% endfor %}
 Päivämäärä:<br>
-<input type="date" id="pvm" name="pvm" min="{{ today }}"> Jos käytät safaria, anna päivämäärä muodossa vvvv-mm-dd.
+<input type="date" id="pvm" name="pvm" min="{{ today }}" required> Jos käytät safaria, anna päivämäärä muodossa vvvv-mm-dd.
 <br>
 Vuoro jonka haluat antaa:<br>
 <input type="text" name="offer"> <br>
-<input type="submit" value="Lähetä">
+<br>
+<button type="submit" onclick="offer_sent()">Lähetä</button>
+</form>
+<br>
+
+<h3>Poista ehdotus:</h3>
+<form action="/delete_give" method="POST">
+{% for offer in your_offers %}
+<input type="checkbox" name="drop" value="{{ offer[0] }}">{{ offer[0] }} <br>
+{% endfor %}
+<br>
+<button type="submit" onclick="confirm_drop()">Poista</button>
 </form>
 
 <br>

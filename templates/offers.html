@@ -19,6 +19,12 @@
     }
 </style>
 
+<script>
+    function confirm_offer() {
+        confirm("Oletko varma että haluat hyväksyä tämän ehdotuksen?");
+    }   
+</script>
+
 {% if session.username and session.user_type == "user" %}
 <title>Ehdotukset</title>
 <h1>Vuoronvaihtosovellus</h1>
@@ -37,6 +43,7 @@
         <th>Ehdotus</th>
         <th>Nimi</th>
         <th>Hyväksy</th>
+        <th>Hylkää</th>
     </tr>
     {% for offer in give_offers %}
     <tr>
@@ -47,12 +54,13 @@
         <td>{{ offer[4] }}</td>
         <td>{{ offer[5] }}</td>
 <form action="/accept_give" method="POST">
-        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[5] }}"></td>
+        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[5] }},confirm,{{ offer[4] }}"></td>
+        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[5] }},cancel,{{ offer[4] }}"></td>
     </tr>
     {% endfor %}
 </table>
 <br>
-<input type="submit" value="Hyväksy">
+<button type="submit" onclick="confirm_offer()">Vahvista</button>
 </form>
 <br>
 <h2>Annetaan vuoro:</h2>
@@ -70,6 +78,7 @@
         <th style="width: 400px">Kommentti</th>
         <th>Nimi</th>
         <th>Hyväksy</th>
+        <th>Hylkää</th>
     </tr>
     {% for offer in take_offers %}
     <tr>
@@ -81,12 +90,13 @@
         <td style="width: 400px">{{ offer[5] }}</td>
         <td>{{ offer[6] }}</td>
 <form action="/accept_take" method="POST">
-        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[6] }}"></td>
+        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[6] }},confirm"></td>
+        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[6] }},cancel"></td>
     </tr>
     {% endfor %}
 </table>
 <br>
-<input type="submit" value="Hyväksy">
+<button type="submit" onclick="confirm_offer()">Vahvista</button>
 </form>
 <br>
 <h2>Vaihdetaan vuoro:</h2>
@@ -106,6 +116,7 @@
         <th>Ehdotus</th>
         <th>Nimi</th>
         <th>Hyväksy</th>
+        <th>Hylkää</th>
     </tr>
     {% for offer in swap_offers %}
     <tr>
@@ -119,12 +130,13 @@
         <td>{{ offer[7] }}</td>
         <td>{{ offer[8] }}</td>
 <form action="/accept_swap" method="POST">
-        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[8] }}"></td>
+        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[8] }},confirm,{{ offer[7] }}"></td>
+        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[8] }},cancel,{{ offer[7] }}"></td>
     </tr>
     {% endfor %}
 </table>
 <br>
-<input type="submit" value="Hyväksy">
+<button type="submit" onclick="confirm_offer()">Hyväksy</button>
 </form>
 {% endif %}
 <br>
