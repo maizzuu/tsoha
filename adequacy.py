@@ -20,9 +20,12 @@ def check_password(password):
     return True
 
 def check_date(date):
-    parts = date.split(".")
-    d = int(parts[0])
+    parts = date.split("-")
+    y = int(parts[0])
+    d = int(parts[2])
     m = int(parts[1])
+    if not 2020 <= y <= 2100:
+        return False
     if not 1 <= m <= 12:
         return False 
     if m in [1, 3, 5, 7, 8, 10, 12]:
@@ -38,7 +41,10 @@ def check_date(date):
     
 def check_time(time):
     parts = time.split(":")
-    h = int(parts[0])
+    h = parts[0]
+    if len(h)>2:
+        return False
+    h = int(h)
     m = int(parts[1])
     if not 0<= h <= 23:
         return False
