@@ -67,22 +67,21 @@
 <body>
 <h1>Vuoronvaihtosovellus</h1>
 <hr>
-<h2>Luo uusi käyttäjä</h2>
+<h3>Luo uusi käyttäjä</h3>
 
 <div class="container">
     <form action="/new_login" method="POST">
         <label for="username">Käyttäjänimi</label>
-        <input type="text" id="username" name="username" required pattern="[A-Za-z].{4,}">
+        <input type="text" id="username" name="username" required pattern="[A-Za-z].{3,}" required>
         <br>
         <label for="password">Salasana</label>
-        <input type="password" id="password" name="password" pattern="(?=.*[a-z])(?=.*\d).{4,}">
+        <input type="password" id="password" name="password" pattern="(?=.*[a-z])(?=.*\d).{4,}" required>
         Käyttäjän tyyppi:<br>
         <br>
         Työntekijä <br>
-        <input type="radio" name="user_type" value="user"> 
+        <input type="radio" name="user_type" value="user" required> 
         Esimies <br>
-        <input type="radio" name="user_type" value="admin"> 
-        </p>
+        <input type="radio" name="user_type" value="admin" required> 
         <input type="submit" value="Luo tunnus">
     </form>
 </div>
@@ -160,6 +159,6 @@
         }
     }
 </script>
-<a href="/">Peruuta</a>
+<button type="button" onclick="location.href='/'">Palaa</button>
 </body>
 </html>
