@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, redirect, request, session
-from adequacy import check_date, check_password, check_time, check_username
+from adequacy import check_date, check_time
 from datetime import date
 from werkzeug.security import check_password_hash, generate_password_hash
 from db import db
@@ -21,7 +21,7 @@ def login():
 	result = db.session.execute(sql, {"username":username})
 	user = result.fetchone()
 	if user == None:
-		return "Väärä käyttäjänimi"
+		return render_template("wrong_username.html")
 	else:
 		hash_value = user[0]
 		if check_password_hash(hash_value,password):
@@ -32,7 +32,7 @@ def login():
 			session["user_type"] = user_type
 			return redirect("/")
 		else:
-			return "Väärä salasana"
+			return render_template("wrong_password.html")
 
 @app.route("/new_login", methods=["POST"])
 def new_login():
@@ -185,9 +185,9 @@ def send_give():
 	if not session["user_type"] == "user":
 		return "Ei oikeutta"
 	date = request.form["date"]
+	if not check_date(date):
+		return render_template("incorrect_date.html")
 	comment = request.form["comment"]
-	if len(date) == 0:
-		return render_template("empty_field.html")
 	sql = "INSERT INTO give (date, comment, username, visibility) VALUES (:date, :comment, :username, 1)"
 	db.session.execute(sql, {"date":date, "comment":comment, "username":session["username"]})
 	db.session.commit()
@@ -269,8 +269,6 @@ def send_take():
 	date = request.form["date"]
 	start_time = request.form["start_time"]
 	end_time = request.form["end_time"]
-	if len(date) == 0 or len(start_time) == 0 or len(end_time) == 0:
-		return render_template("empty_field.html")
 	if not check_time(start_time):
 		return render_template("incorrect_start_time.html")
 	if not check_time(end_time):
@@ -355,8 +353,6 @@ def send_swap():
 	date = request.form["date"]
 	start_time = request.form["start_time"]
 	end_time = request.form["end_time"]
-	if len(date) == 0 or len(start_time) == 0 or len(end_time) == 0:
-		return render_template("empty_swap.html")
 	if not check_time(start_time):
 		return render_template("incorrect_start_time_swap.html")
 	if not check_time(end_time):
