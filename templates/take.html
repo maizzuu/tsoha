@@ -1,4 +1,21 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <style>
+    body{
+        font-family: serif;
+    }
+    h1{
+        text-align: center;
+        background-color: rgb(4, 22, 60);
+        background-size: cover;
+        padding-bottom: 15px;
+        padding-top: 15px;
+        color: rgb(255, 255, 255);
+    }
+    table{
+        margin-left: auto;
+        margin-right: auto;
+    }
     table, td, th {
         text-align: center;
         border-collapse: collapse
@@ -7,80 +24,119 @@
     td, th {
         width: 75;
         height: 50;
+        padding: 15px;
         border-bottom: 1px solid rgb(0, 0, 0);
+        box-sizing: border-box;
+        font-family: serif;
       }
     
     th {
-        background-color: lightskyblue;
+        background-color: rgb(233, 196, 102);
     }
     
     tr:nth-child(odd) {
-        background-color: rgb(187, 233, 248);
+        background-color: lightgoldenrodyellow;
     }
     p.add {
         text-align: right;
+        display: inline-block;
+        color: rgb(4, 22, 60);
+    }
+    p.back {
+        text-align: left;
+        display: inline-block;
+        padding-right: 20px;
+        color: rgb(4, 22, 60);
     }
 </style>
 <script>
     function offer_sent() {
-        alert("Ehdotus lähetetty!");
+        return alert("Ehdotus lähetetty!");
     }
+
     function confirm_drop() {
         confirm("Oletko varma että haluat poistaa pyynnön?");
     }
 </script>
 
 <title>Annettavat vuorot</title>
-<h1>Vuoronvaihtosovellus</h1>
+
+<h1 onclick="location.href='/'">Vuoronvaihtosovellus</h1>
+
+<div class="container">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/" style="color: rgb(4, 22, 60);">Palaa etusivulle</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/new_take" style="color: rgb(4, 22, 60);">Anna vuoro pois</a>
+                </li>
+                <li class="nav-item">
+                    <p class="nav-link disabled" style="padding-left: 605px; color: rgb(4, 22, 60);">Olet kirjautunut nimellä {{ session.username }}</p>
+                </li>
+            </ul>
+        </div>       
+    </nav>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col"><h2>Annetaan pois vuoroja:</h2></div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <table>
+            <tr>
+                <th>id</th>
+                <th>Päivämäärä</th>
+                <th>Alkaa</th>
+                <th>Loppuu</th>
+                <th>Työpiste</th>
+                <th style="width: 500px;">Kommentti</th>
+                <th style="width: 300px">Työntekijä</th>
+            </tr>
+            {% for offer in offers %}
+            <tr>
+                <td>{{ offer[0] }}</td>
+                <td>{{ offer[1] }}</td>
+                <td>{{ offer[2] }}</td>
+                <td>{{ offer[3] }}</td>
+                <td>{{ offer[4] }}</td>
+                <td style="width: 500px;">{{ offer[5] }}</td>
+                <td style="width: 300px">{{ offer[6] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <h3>Ota vuoro:</h3>
+            Valitse haluamaasi vuoroa vastaava id.
+            <br>
+            <form action="/offer_take" method="POST" onsubmit="return offer_sent()">
+            {% for id in id_list %}
+            <input type="radio" name="id" value="{{ id[0] }}" required> {{ id[0] }}<br>
+            {% endfor %}
+            <br>
+            <button type="submit">Lähetä</button>
+            </form>
+            <br>
+        </div>
+        <div class="col-sm">
+            <h3>Poista ehdotus:</h3>
+            Valitse id joka vastaa vuoroa, jonka haluat poistaa:
+            <br>
+            <form action="/delete_take" method="POST">
+            {% for offer in your_offers %}
+            <input type="checkbox" name="drop" value="{{ offer[0] }}" required> {{ offer[0] }} <br>
+            {% endfor %}
+            <br>
+            <button type="submit" onclick="return confirm_drop()">Poista</button>
+            </form>
+            <br>
+        </div>
+    </div>
+</div>
 <hr>
-<p class="add"> <a href="/new_take">Anna pois vuoro</a> </p>
-<h2>Annetaan pois vuoroja:</h2>
-<table>
-    <tr>
-        <th>id</th>
-        <th>Päivämäärä</th>
-        <th>Alkaa</th>
-        <th>Loppuu</th>
-        <th>Työpiste</th>
-        <th style="width: 500px;">Kommentti</th>
-        <th style="width: 300px">Työntekijä</th>
-    </tr>
-    {% for offer in offers %}
-    <tr>
-        <td>{{ offer[0] }}</td>
-        <td>{{ offer[1] }}</td>
-        <td>{{ offer[2] }}</td>
-        <td>{{ offer[3] }}</td>
-        <td>{{ offer[4] }}</td>
-        <td style="width: 500px;">{{ offer[5] }}</td>
-        <td style="width: 300px">{{ offer[6] }}</td>
-    </tr>
-    {% endfor %}
-</table>
-<br>
-
-<h2>Ota vuoro:</h2>
-Valitse haluamaasi vuoroa vastaava id.
-<br>
-<form action="/offer_take" method="POST">
-{% for id in id_list %}
-<input type="radio" name="id" value="{{ id[0] }}"> {{ id[0] }}<br>
-{% endfor %}
-<br>
-<button type="submit" onclick="offer_sent()">Lähetä</button>
-</form>
-<br>
-
-<h3>Poista ehdotus:</h3>
-<form action="/delete_take" method="POST">
-{% for offer in your_offers %}
-<input type="checkbox" name="drop" value="{{ offer[0] }}">{{ offer[0] }} <br>
-{% endfor %}
-<br>
-<button type="submit" onclick="confirm_drop()">Poista</button>
-</form>
-<br>
-<a href="/">Palaa etusivulle</a>
-<hr>
-
-
