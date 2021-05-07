@@ -1,11 +1,18 @@
+<!DOCTYPE html>
+<script>
+    function sent() {
+        alert("Ehdotus lähetetty!");
+    }
+</script>
+
 <title>Ehdota vaihtoa</title>
 Pakolliset kohdat merkitty tähdellä. <br>
-<form action="/send_swap" method="POST">
-    Päivämäärä: * <input type="date" id="date" name="date" min="{{ today }}"> Jos käytät safaria, syötä päivämäärä muodossa vvvv-mm-dd.
+<form action="/send_swap" method="POST" onsubmit="sent()">
+    Päivämäärä: * <input type="date" id="date" name="date" min="{{ today }}" required> Jos käytät safaria, syötä päivämäärä muodossa vvvv-mm-dd.
     <br>
-    Alkamisaika: * <input type="text" name="start_time" value="" size="20"> Muodossa hh:mm
+    Alkamisaika: * <input type="text" name="start_time" value="" size="20" required> Muodossa hh:mm
     <br>
-    Loppumisaika: * <input type="text" name="end_time" value="" size="20"> Muodossa hh:mm
+    Loppumisaika: * <input type="text" name="end_time" value="" size="20" required> Muodossa hh:mm
     <br>
     Työpiste: <input type="text" name="post" value="" size="20">
     <br>
@@ -15,4 +22,4 @@ Pakolliset kohdat merkitty tähdellä. <br>
     <input type="submit" value="Lähetä">
 </form>
 <br>
-<a href="/swap">Peruuta</a>
+<button type="button" onclick="location.href='/swap'">Peruuta</button>
