@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <style>
     table, td, th, tr {
         text-align: center;
@@ -21,7 +22,7 @@
 
 <script>
     function confirm_offer() {
-        confirm("Oletko varma että haluat hyväksyä tämän ehdotuksen?");
+        return confirm("Oletko varma että haluat hyväksyä/hylätä tämän ehdotuksen?");
     }   
 </script>
 
@@ -60,7 +61,7 @@
     {% endfor %}
 </table>
 <br>
-<button type="submit" onclick="confirm_offer()">Vahvista</button>
+<button type="submit" onclick="return confirm_offer()">Vahvista</button>
 </form>
 <br>
 <h2>Annetaan vuoro:</h2>
@@ -96,7 +97,7 @@
     {% endfor %}
 </table>
 <br>
-<button type="submit" onclick="confirm_offer()">Vahvista</button>
+<button type="submit" onclick="return confirm_offer()">Vahvista</button>
 </form>
 <br>
 <h2>Vaihdetaan vuoro:</h2>
@@ -136,7 +137,7 @@
     {% endfor %}
 </table>
 <br>
-<button type="submit" onclick="confirm_offer()">Hyväksy</button>
+<button type="submit" onclick="return confirm_offer()">Hyväksy</button>
 </form>
 {% endif %}
 <br>
