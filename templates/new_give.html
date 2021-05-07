@@ -1,7 +1,14 @@
+<!DOCTYPE html>
+<script>
+    function sent() {
+        alert("Ehdotus lähetetty!");
+    }
+</script>
+
 <title>Ota vuoro</title>
 Pakolliset kohdat merkitty tähdellä. <br>
-<form action="/send_give" method="POST">
-Päivämäärä: * <input type="date" id="date" name="date" min="{{ today }}"> Jos käytät safaria, syötä päivämäärä muodossa vvvv-mm-dd.
+<form action="/send_give" method="POST" onsubmit="sent()">
+Päivämäärä: * <input type="date" id="date" name="date" min="{{ today }}" required> Jos käytät safaria, syötä päivämäärä muodossa vvvv-mm-dd.
 <br>
 Kommentti: <br>
 <textarea name="comment" rows="3" cols="40"></textarea> 
@@ -9,4 +16,4 @@ Kommentti: <br>
 <input type="submit" value="Lähetä">
 </form>
 <br>
-<a href="/give">Peruuta</a>
+<button type="button" onclick="location.href='/give'">Peruuta</button>
