@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <style>
 table, td, th {
     text-align: center;
@@ -24,6 +25,10 @@ p.add {
 <script>
     function offer_sent() {
         alert("Ehdotus lähetetty!");
+    }
+
+    function confirm_drop() {
+        confirm("Oletko varma että haluat poistaa pyynnön?");
     }
 </script>
 
@@ -59,26 +64,26 @@ p.add {
 <h2>Ehdota vaihtoa:</h2>
 Valitse haluamaasi vaihtoa vastaava id.
 <br>
-<form action="/offer_swap" method="POST">
+<form action="/offer_swap" method="POST" onsubmit="return offer_sent()">
 {% for id in id_list %}
-<input type="radio" name="id" value="{{ id[0] }}"> {{ id[0] }}<br>
+<input type="radio" name="id" value="{{ id[0] }}" required> {{ id[0] }}<br>
 {% endfor %}
 Päivämäärä: <br>
-<input type="date" id="pvm" name="pvm" min="{{ today }}"> Jos käytät safaria, anna päivämäärä muodossa vvvv-mm-dd. <br>
+<input type="date" id="pvm" name="pvm" min="{{ today }}" required> Jos käytät safaria, anna päivämäärä muodossa vvvv-mm-dd. <br>
 Vuoro: <br>
-<input type="text" name="offer"> <br>
+<input type="text" name="offer" required> <br>
 <br>
-<button type="submit" onclick="offer_sent()">Lähetä</button>
+<button type="submit">Lähetä</button>
 </form>
 <br>
 
 <h3>Poista ehdotus:</h3>
 <form action="/delete_swap" method="POST">
 {% for offer in your_offers %}
-<input type="checkbox" name="drop" value="{{ offer[0] }}">{{ offer[0] }} <br>
+<input type="checkbox" name="drop" value="{{ offer[0] }}" required>{{ offer[0] }} <br>
 {% endfor %}
 <br>
-<button type="submit" onclick="confirm_drop()">Poista</button>
+<button type="submit" onclick="return confirm_drop()">Poista</button>
 </form>
 
 <br>
