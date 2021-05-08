@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, redirect, request, session
+from flask import abort, render_template, redirect, request, session
 from adequacy import check_date, check_time
 from datetime import date
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -64,6 +64,8 @@ def create():
 
 @app.route("/offers")
 def offers():
+	if not session["user_type"] == "user":
+		abort(403)
 	username = session["username"]
 	sql = "SELECT g.id, g.date, g.comment, go.date, go.offer, go.username FROM give g, give_offers go WHERE g.id=go.give_id AND g.username = :username AND go.user_visibility=1 AND go.date >= :today ORDER BY g.date"
 	result = db.session.execute(sql, {"username":username, "today":today})
@@ -82,7 +84,7 @@ def offers():
 def waiting():
 	db.create_all()
 	if not session["user_type"] == "admin":
-		return "Ei oikeutta"
+		abort(403)
 	#give
 	result = db.session.execute("SELECT g.date, go.offer, g.username, go.username, g.id FROM give_offers go, give g WHERE go.give_id = g.id AND go.admin_visibility = 1 ORDER BY g.date")
 	offers_give = result.fetchall()
@@ -97,7 +99,7 @@ def waiting():
 @app.route("/confirm", methods=["POST"])
 def confirm():
 	if not session["user_type"] == "admin":
-		return "Ei oikeutta"
+		abort(403)
 	form = request.form["id"]
 	form = form.split(",")
 	id_value = form[0]
@@ -164,6 +166,8 @@ def confirm():
 
 @app.route("/give")
 def give():
+	if not session["user_type"] == "user":
+		abort(403)
 	db.create_all()
 	result = db.session.execute("SELECT id, date, comment, username FROM give WHERE visibility = 1 and date >= :today ORDER BY date", {"today":today})
 	offers = result.fetchall()
@@ -177,13 +181,13 @@ def give():
 @app.route("/new_give")
 def new_give():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	return render_template("new_give.html", today=today)
 
 @app.route("/send_give", methods=["POST"])
 def send_give():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	date = request.form["date"]
 	if not check_date(date):
 		return render_template("incorrect_date.html")
@@ -196,7 +200,7 @@ def send_give():
 @app.route("/offer_give", methods=["POST"])
 def offer_give():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	give_id = request.form["id"]
 	pvm = request.form["pvm"]
 	offer = request.form["offer"]
@@ -208,7 +212,7 @@ def offer_give():
 @app.route("/accept_give", methods=["POST"])
 def accept_give():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	ok = request.form["ok"]
 	ok = ok.split(",")
 	give_id = ok[0]
@@ -234,7 +238,7 @@ def accept_give():
 @app.route("/delete_give", methods=["POST"])
 def delete_give():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	drop_ids = request.form.getlist("drop")
 	for drop_id in drop_ids:
 		sql = "UPDATE give SET visibility = 0 WHERE id = :id"
@@ -246,6 +250,8 @@ def delete_give():
 
 @app.route("/take")
 def take():
+	if not session["user_type"] == "user":
+		abort(403)
 	db.create_all()
 	result = db.session.execute("SELECT id, date, start_time, end_time, post, comment, username FROM take WHERE visibility = 1 and date >= :today ORDER BY date", {"today":today})
 	offers = result.fetchall()
@@ -259,13 +265,13 @@ def take():
 @app.route("/new_take")
 def new_take():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	return render_template("new_take.html", today=today)
 
 @app.route("/send_take", methods=["POST"])
 def send_take():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	date = request.form["date"]
 	start_time = request.form["start_time"]
 	end_time = request.form["end_time"]
@@ -283,7 +289,7 @@ def send_take():
 @app.route("/offer_take", methods=["POST"])
 def offer_take():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	take_id = request.form["id"]
 	sql = 'INSERT INTO take_offers (take_id, username, admin_visibility, user_visibility) VALUES (:id, :username, 0, 1)'
 	db.session.execute(sql, {"id":take_id, "username":session["username"]})
@@ -293,7 +299,7 @@ def offer_take():
 @app.route("/accept_take", methods=["POST"])
 def accept_take():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	ok = request.form["ok"]
 	ok = ok.split(",")
 	take_id = ok[0]
@@ -318,7 +324,7 @@ def accept_take():
 @app.route("/delete_take", methods=["POST"])
 def delete_take():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	drop_ids = request.form.getlist("drop")
 	for drop_id in drop_ids:
 		sql = "UPDATE take SET visibility = 0 WHERE id = :id"
@@ -330,6 +336,8 @@ def delete_take():
 
 @app.route("/swap")
 def swap():
+	if not session["user_type"] == "user":
+		abort(403)
 	db.create_all()
 	result = db.session.execute("SELECT id, date, start_time, end_time, post, comment, username FROM swap WHERE visibility = 1 and date >= :today ORDER BY date", {"today":today})
 	offers = result.fetchall()
@@ -343,13 +351,13 @@ def swap():
 @app.route("/new_swap")
 def new_swap():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	return render_template("new_swap.html", today=today)
 
 @app.route("/send_swap", methods=["POST"])
 def send_swap():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	date = request.form["date"]
 	start_time = request.form["start_time"]
 	end_time = request.form["end_time"]
@@ -367,7 +375,7 @@ def send_swap():
 @app.route("/offer_swap", methods=["POST"])
 def offer_swap():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	swap_id = request.form["id"]
 	pvm = request.form["pvm"]
 	offer = request.form["offer"]
@@ -379,7 +387,7 @@ def offer_swap():
 @app.route("/accept_swap", methods=["POST"])
 def accept_swap():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	ok = request.form["ok"]
 	ok = ok.split(",")
 	swap_id = ok[0]
@@ -405,7 +413,7 @@ def accept_swap():
 @app.route("/delete_swap", methods=["POST"])
 def delete_swap():
 	if not session["user_type"] == "user":
-		return "Ei oikeutta"
+		abort(403)
 	drop_ids = request.form.getlist("drop")
 	for drop_id in drop_ids:
 		sql = "UPDATE swap SET visibility = 0 WHERE id = :id"
