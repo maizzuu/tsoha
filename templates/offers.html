@@ -1,146 +1,197 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <style>
-    table, td, th, tr {
+    body{
+        font-family: serif;
+    }
+    h1{
         text-align: center;
-        border: 1px rgb(0, 0, 0);
-        border-collapse: col;
+        background-color: rgb(4, 22, 60);
+        background-size: cover;
+        padding-bottom: 15px;
+        padding-top: 15px;
+        color: rgb(255, 255, 255);
+    }
+    table{
+        margin-left: auto;
+        margin-right: auto;
+    }
+    table, td, th {
+        text-align: center;
+        border-collapse: collapse
       }
       
     td, th {
-        width: 95;
+        width: 75;
         height: 50;
+        padding: 15px;
+        border-bottom: 1px solid rgb(0, 0, 0);
+        box-sizing: border-box;
+        font-family: serif;
       }
     
     th {
-        background-color: lightskyblue;
+        background-color: rgb(233, 196, 102);
     }
     
     tr:nth-child(even) {
-        background-color: rgb(187, 233, 248);
+        background-color: lightgoldenrodyellow;
     }
 </style>
-
 <script>
     function confirm_offer() {
         return confirm("Oletko varma että haluat hyväksyä/hylätä tämän ehdotuksen?");
     }   
 </script>
 
-{% if session.username and session.user_type == "user" %}
 <title>Ehdotukset</title>
-<h1>Vuoronvaihtosovellus</h1>
-<hr>
-<h2>Otetaan vuoro:</h2>
-<table>
-    <tr>
-        <th colspan="3">Sinun ilmoituksesi:</th>
-        <th colspan="3">Työkaverin ehdotus:</th>
-    </tr>
-    <tr>
-        <th>id</th>
-        <th>Päivämäärä</th>
-        <th style="width: 400px">Kommentti</th>
-        <th>Päivämäärä</th>
-        <th>Ehdotus</th>
-        <th>Nimi</th>
-        <th>Hyväksy</th>
-        <th>Hylkää</th>
-    </tr>
-    {% for offer in give_offers %}
-    <tr>
-        <td>{{ offer[0] }}</td>
-        <td>{{ offer[1] }}</td>
-        <td style="width: 400px">{{ offer[2] }}</td>
-        <td>{{ offer[3] }}</td>
-        <td>{{ offer[4] }}</td>
-        <td>{{ offer[5] }}</td>
-<form action="/accept_give" method="POST">
-        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[5] }},confirm,{{ offer[4] }}"></td>
-        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[5] }},cancel,{{ offer[4] }}"></td>
-    </tr>
-    {% endfor %}
-</table>
-<br>
-<button type="submit" onclick="return confirm_offer()">Vahvista</button>
-</form>
-<br>
-<h2>Annetaan vuoro:</h2>
-<table>
-    <tr>
-        <th colspan="6">Sinun ilmoituksesi:</th>
-        <th colspan="1">Vuoron ottaa:</th>
-    </tr>
-    <tr>
-        <th>id</th>
-        <th>Päivämäärä</th>
-        <th>Alkaa</th>
-        <th>Loppuu</th>
-        <th>Työpiste</th>
-        <th style="width: 400px">Kommentti</th>
-        <th>Nimi</th>
-        <th>Hyväksy</th>
-        <th>Hylkää</th>
-    </tr>
-    {% for offer in take_offers %}
-    <tr>
-        <td>{{ offer[0] }}</td>
-        <td>{{ offer[1] }}</td>
-        <td>{{ offer[2] }}</td>
-        <td>{{ offer[3] }}</td>
-        <td>{{ offer[4] }}</td>
-        <td style="width: 400px">{{ offer[5] }}</td>
-        <td>{{ offer[6] }}</td>
-<form action="/accept_take" method="POST">
-        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[6] }},confirm"></td>
-        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[6] }},cancel"></td>
-    </tr>
-    {% endfor %}
-</table>
-<br>
-<button type="submit" onclick="return confirm_offer()">Vahvista</button>
-</form>
-<br>
-<h2>Vaihdetaan vuoro:</h2>
-<table>
-    <tr>
-        <th colspan="6">Sinun ilmoituksesi:</th>
-        <th colspan="3" style="width: 120px">Ehdotus vaihdosta:</th>
-    </tr>
-    <tr>
-        <th>id</th>
-        <th>Päivämäärä</th>
-        <th>Alkaa</th>
-        <th>Loppuu</th>
-        <th>Työpiste</th>
-        <th style="width: 400px">Kommentti</th>
-        <th>Päivämäärä</th>
-        <th>Ehdotus</th>
-        <th>Nimi</th>
-        <th>Hyväksy</th>
-        <th>Hylkää</th>
-    </tr>
-    {% for offer in swap_offers %}
-    <tr>
-        <td>{{ offer[0] }}</td>
-        <td>{{ offer[1] }}</td>
-        <td>{{ offer[2] }}</td>
-        <td>{{ offer[3] }}</td>
-        <td>{{ offer[4] }}</td>
-        <td style="width: 400px">{{ offer[5] }}</td>
-        <td>{{ offer[6] }}</td>
-        <td>{{ offer[7] }}</td>
-        <td>{{ offer[8] }}</td>
-<form action="/accept_swap" method="POST">
-        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[8] }},confirm,{{ offer[7] }}"></td>
-        <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[8] }},cancel,{{ offer[7] }}"></td>
-    </tr>
-    {% endfor %}
-</table>
-<br>
-<button type="submit" onclick="return confirm_offer()">Hyväksy</button>
-</form>
-{% endif %}
-<br>
-<br>
-<a href="/">Palaa etusivulle</a>
-<hr>
+
+<h1 onclick="location.href='/'">Vuoronvaihtosovellus</h1>
+
+<div class="container">
+    <nav class="navbar navbar-expand-sm navbar-light" style="background-color: rgb(239,240,247);">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/" style="color: rgb(4, 22, 60);">Palaa etusivulle</a>
+            </li>
+            <li class="nav-item">
+                <p class="nav-link disabled" style="padding-left: 720px; color: rgb(4, 22, 60);">Olet kirjautunut nimellä {{ session.username }}</p>
+            </li>
+        </ul>
+    </nav>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col"><br><br><h2 style="text-align: center;">Otetaan vuoro:</h2></div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <table>
+            <tr>
+                <th colspan="3">Sinun ilmoituksesi:</th>
+                <th colspan="3">Työkaverin ehdotus:</th>
+                <th colspan="2">Valinta:</th>
+            </tr>
+            <tr>
+                <th>id</th>
+                <th>Päivämäärä</th>
+                <th style="width: 400px">Kommentti</th>
+                <th>Päivämäärä</th>
+                <th>Ehdotus</th>
+                <th>Nimi</th>
+                <th>Hyväksy</th>
+                <th>Hylkää</th>
+            </tr>
+            {% for offer in give_offers %}
+            <tr>
+                <td>{{ offer[0] }}</td>
+                <td>{{ offer[1] }}</td>
+                <td style="width: 400px">{{ offer[2] }}</td>
+                <td>{{ offer[3] }}</td>
+                <td>{{ offer[4] }}</td>
+                <td>{{ offer[5] }}</td>
+        <form action="/accept_give" method="POST">
+                <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[5] }},confirm,{{ offer[4] }}"></td>
+                <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[5] }},cancel,{{ offer[4] }}"></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col" style="text-align: center;"><br><button type="submit" onclick="return confirm_offer()">Vahvista</button></form></div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col"><br><br><h2 style="text-align: center;">Annetaan vuoro:</h2></div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <table>
+            <tr>
+                <th colspan="6">Sinun ilmoituksesi:</th>
+                <th colspan="1">Vuoron ottaa:</th>
+                <th colspan="2">Valinta:</th>
+            </tr>
+            <tr>
+                <th>id</th>
+                <th>Päivämäärä</th>
+                <th>Alkaa</th>
+                <th>Loppuu</th>
+                <th>Työpiste</th>
+                <th style="width: 400px">Kommentti</th>
+                <th>Nimi</th>
+                <th>Hyväksy</th>
+                <th>Hylkää</th>
+            </tr>
+            {% for offer in take_offers %}
+            <tr>
+                <td>{{ offer[0] }}</td>
+                <td>{{ offer[1] }}</td>
+                <td>{{ offer[2] }}</td>
+                <td>{{ offer[3] }}</td>
+                <td>{{ offer[4] }}</td>
+                <td style="width: 400px">{{ offer[5] }}</td>
+                <td>{{ offer[6] }}</td>
+        <form action="/accept_take" method="POST">
+                <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[6] }},confirm"></td>
+                <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[6] }},cancel"></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col" style="text-align: center;"><br><button type="submit" onclick="return confirm_offer()">Vahvista</button></form></div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col"><br><br><h2 style="text-align: center;">Vaihdetaan vuoro:</h2></div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <table>
+            <tr>
+                <th colspan="6">Sinun ilmoituksesi:</th>
+                <th colspan="3">Ehdotus vaihdosta:</th>
+                <th colspan="2">Valinta:</th>
+            </tr>
+            <tr>
+                <th>id</th>
+                <th>Päivämäärä</th>
+                <th>Alkaa</th>
+                <th>Loppuu</th>
+                <th>Työpiste</th>
+                <th style="width: 400px">Kommentti</th>
+                <th>Päivämäärä</th>
+                <th>Ehdotus</th>
+                <th>Nimi</th>
+                <th>Hyväksy</th>
+                <th>Hylkää</th>
+            </tr>
+            {% for offer in swap_offers %}
+            <tr>
+                <td>{{ offer[0] }}</td>
+                <td>{{ offer[1] }}</td>
+                <td>{{ offer[2] }}</td>
+                <td>{{ offer[3] }}</td>
+                <td>{{ offer[4] }}</td>
+                <td style="width: 400px">{{ offer[5] }}</td>
+                <td>{{ offer[6] }}</td>
+                <td>{{ offer[7] }}</td>
+                <td>{{ offer[8] }}</td>
+        <form action="/accept_swap" method="POST">
+                <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[8] }},confirm,{{ offer[7] }}"></td>
+                <td><input type="radio" name="ok" value="{{ offer[0] }},{{ offer[8] }},cancel,{{ offer[7] }}"></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col" style="text-align: center;"><br><button type="submit" onclick="return confirm_offer()">Vahvista</button></form></div>
+        <div class="col"></div>
+    </div>
+</div>

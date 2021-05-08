@@ -1,43 +1,142 @@
 <!DOCTYPE html>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<style>
+    body{
+        font-family: serif;
+    }
+    h1{
+        text-align: center;
+        background-color: rgb(4, 22, 60);
+        background-size: cover;
+        padding-bottom: 15px;
+        padding-top: 15px;
+        color: rgb(255, 255, 255);
+    }
+    table{
+        margin-left: auto;
+        margin-right: auto;
+    }
+    table, td, th {
+        text-align: center;
+        border-collapse: collapse
+      }
+      
+    td, th {
+        width: 75;
+        height: 50;
+        padding: 15px;
+        border-bottom: 1px solid rgb(0, 0, 0);
+        box-sizing: border-box;
+        font-family: serif;
+      }
+    
+    th {
+        background-color: rgb(233, 196, 102);
+    }
+    
+    tr:nth-child(odd) {
+        background-color: lightgoldenrodyellow;
+    }
+</style>
 
 <title>Etusivu</title>
 
-<body>
-    <h1>Vuoronvaihtosovellus</h1>
-    <hr>
-    <p>
-    {% if session.username and session.user_type == "user" %}
-    <p>Olet kirjautunut nimellä {{ session.username }}</p>
-    <nav>
-        <ul>
-            <li><a href="/give">Katso otettavat vuorot</a></li>
-            <li><a href="/take">Katso annettavat vuorot</a></li>
-            <li><a href="/swap">Katso vaihdettavat vuorot</a></li>
+<h1 onclick="location.href='/'">Vuoronvaihtosovellus</h1>
+
+{% if session.username and session.user_type == "user" %}
+
+<div class="container">
+    <nav class="navbar navbar-expand-sm navbar-light" style="background-color: rgb(239,240,247);">
+        <ul class=" navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/give" style="color: rgb(4, 22, 60);">Katso otettavat vuorot</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/take" style="color: rgb(4, 22, 60);">Katso annettavat vuorot</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/swap" style="color: rgb(4, 22, 60);">Katso vaihdettavat vuorot</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/offers" style="color: rgb(4, 22, 60);">Katso ehdotukset</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout" style="color: rgb(4, 22, 60); padding-left: 300px;">Kirjaudu ulos</a>
+            </li>
         </ul>
     </nav>
-    <br>
-    <a href="/offers">Katso ehdotukset</a>
-    <br>
-    <br>
-    <a href="/logout">Kirjaudu ulos</a>
+    <div class="row">
+        <div class="col"><br><br></div>
+    </div>
+    <div class="row">
+        <div class="col" style="text-align: center;">
+            <p style="color: rgb(4, 22, 60); font-size: 50px; background-color: lightgoldenrodyellow;">Tervetuloa {{ session.username }}!</p>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <div class="col" style="font-size: 20px; text-align: center;">
+            Täällä voit vaihtaa vuoroja työkavereiden kanssa ja antaa omia vuoroja pois.
+            Voit myös pyytää itsellesi lisää vuoroja ja ottaa toisten tarjoamia vuoroja.
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
 
-    {% elif session.username and session.user_type == "admin" %}
-    <p>Olet kirjautunut nimellä {{ session.username }}</p>
-    <p>
-        Hyväksyntää odottavat vaihdot löytyvät <a href="/waiting"> täältä</a>
-    </p>
-    <br>
-    <br>
-    <a href="/logout">Kirjaudu ulos</a>
-    {% else %}
-    <form action="/login" method="POST">
-    <p>Tunnus:<br>
-    <input type="text" name="username"></p>
-    <p>Salasana:<br>
-    <input type="password" name="password"></p>
-    <input type="submit" value="Kirjaudu">
-    </form>
-    <a href="/create">Luo käyttäjä</a>
-    {% endif %}
-</body>
+{% elif session.username and session.user_type == "admin" %}
+
+<div class="container">
+    <nav class="navbar navbar-expand-sm navbar-light" style="background-color: rgb(239, 240, 247);">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/waiting" style="color: rgb(4, 22, 60);">Hyväksyntää odottavat vaihdot</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout" style="color: rgb(4, 22, 60);">Kirjaudu ulos</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="row">
+        <div class="col"><br><br></div>
+    </div>
+    <div class="row">
+        <div class="col" style="text-align: center;">
+            <p style="color: rgb(4, 22, 60); font-size: 50px; background-color: lightgoldenrodyellow;">Tervetuloa {{ session.username }}!</p>
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+
+{% else %}
+<div class="container">
+    <div class="row">
+        <div class="col"><br><br><br></div>
+    </div>
+    <div class="row">
+        <div class="col" style="font-size: 17px;">
+            <form action="/login" method="POST">
+                <p>Käyttäjätunnus:<br>
+                <input type="text" name="username"></p>
+                <p>Salasana:<br>
+                <input type="password" name="password">
+                <br>
+                <br>
+                <button type="submit" class="btn btn-secondary">Kirjaudu</button></p>
+            </form>
+        </div>
+        <div class="col">
+            <h4>Tervetuloa Airpron vuoronvaihtosovellukseen!</h4><br>
+            <p style="font-size: 17px;">
+                Täällä voit vaihtaa vuoroja työkavereiden kanssa ja <br>
+                antaa omia vuoroja pois. Voit myös pyytää itsellesi <br>
+                lisää vuoroja ja ottaa toisten tarjoamia vuoroja.
+                <br>
+                <br>
+                <button type="button" class="btn btn-secondary" onclick="location.href='/create'">Luo uusi käyttäjä</button>
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
