@@ -121,7 +121,7 @@
             <br>
             <form action="/delete_give" method="POST">
             {% for offer in your_offers %}
-            <input type="checkbox" name="drop" value="{{ offer[0] }}" required> {{ offer[0] }} <br>
+            <input type="checkbox" name="drop" value="{{ offer[0] }}"> {{ offer[0] }} <br>
             {% endfor %}
             <br>
             <button type="submit" onclick="return confirm_drop()">Poista</button>
