@@ -359,6 +359,8 @@ def send_swap():
 	if not session["user_type"] == "user":
 		abort(403)
 	date = request.form["date"]
+	if not check_date(date):
+		return render_template("incorrect_date.html")
 	start_time = request.form["start_time"]
 	end_time = request.form["end_time"]
 	if not check_time(start_time):
