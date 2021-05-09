@@ -1,5 +1,13 @@
 # Vuoronvaihtosovellus  
 
+## Testaaminen Herokussa
+https://tsoha-vuoronvaihtosovellus.herokuapp.com  
+* Sovellus toimii parhaiten muilla selaimilla kuin Safarilla tai Internet Explorerilla.
+* Sovellusta voi testata Herokussa luomalla uuden käyttäjän.  
+* Sovelluksessa on käytössä kaikki listatut toiminnallisuudet.
+
+## Toiminnot
+
 Sovelluksen ideana on mahdollistaa digitaalinen työvuoronvaihto nykyisellä työpaikallani. Työntekijät voivat tarjota vuoroja otettavaksi pois sekä tarjota päiviä, joille voisi ottaa ylimääräisiä vuoroja. Esimies voi hyväksyä tai hylätä vaihtopyyntöjä.  
 
 Ominaisuuksia:  
@@ -21,9 +29,3 @@ Ominaisuuksia:
 * Jos esimies hylkää ehdotuksen, palaa se uudestaan kaikkien nähtäväksi.
 * Oman ehdotuksen voi myös poistaa sivun lomakkeella.
 * Valitettavasti en saanut csrf-tokenia käyttöön, sillä mikään käyttämistäni selaimista ei toiminut sen kanssa.
-
-## Testaaminen Herokussa
-https://tsoha-vuoronvaihtosovellus.herokuapp.com  
-* Sovellus toimii parhaiten muilla selaimilla kuin Safarilla tai Internet Explorerilla.
-* Sovellusta voi testata Herokussa luomalla uuden käyttäjän.  
-* Sovelluksessa on käytössä kaikki listatut toiminnallisuudet.
