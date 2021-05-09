@@ -1,14 +1,37 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<style>
+  body{
+      font-family: serif;
+  }
+  .container{
+        text-align: center;
+        font-size: 20px;
+        padding: 40px;
+        background-color: #f1f1f1;
+    }
+</style>
 <script>
-    function goBack() {
+    function go_back() {
       window.history.back();
     }
 </script>
 
 <title>Alkamisaika väärin</title>
 
-<h1>Alkamisaika väärin. Tarkista antamasi aika.</h1>
-Anna alkamisaika muodossa hh:mm
-<br>
-<br>
-<button type="button" onclick="goBack()">Palaa</button>
+<br><br><br><br><br><br>
+<div class="container">
+  <div class="row">
+    <div class="col" style="text-align: center;">
+      <h2>Alkamisaika väärin. Tarkista antamasi aika.</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col" style="text-align: center;">
+      Anna aika muodossa hh:mm.
+      <br>
+      <br>
+      <button onclick="go_back()" class="btn btn-secondary" style="width: 200px;">Palaa</button>
+    </div>
+  </div>
+</div>

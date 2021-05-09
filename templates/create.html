@@ -1,8 +1,18 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <style>
+    body{
+        font-family: serif;
+    }
+    h1{
+        text-align: center;
+        background-color: rgb(4, 22, 60);
+        background-size: cover;
+        padding-bottom: 15px;
+        padding-top: 15px;
+        color: rgb(255, 255, 255);
+    }
     input {
         width: 100%;
         padding: 12px;
@@ -13,8 +23,8 @@
         margin-bottom: 16px;
     }
     .container {
-        background-color: #f1f1f1;
         padding: 20px;
+        font-size: large;
     }
     #message {
         display:none;
@@ -63,40 +73,56 @@
     }
 </style>
 <title>Luo uusi käyttäjä</title>
-</head>
-<body>
-<h1>Vuoronvaihtosovellus</h1>
-<hr>
-<h3>Luo uusi käyttäjä</h3>
+
+<h1 onclick="location.href='/'">Vuoronvaihtosovellus</h1>
+
+
 
 <div class="container">
-    <form action="/new_login" method="POST">
-        <label for="username">Käyttäjänimi</label>
-        <input type="text" id="username" name="username" required pattern="[A-Za-z].{3,}" required>
-        <br>
-        <label for="password">Salasana</label>
-        <input type="password" id="password" name="password" pattern="(?=.*[a-z])(?=.*\d).{4,}" required>
-        Käyttäjän tyyppi:<br>
-        <br>
-        Työntekijä <br>
-        <input type="radio" name="user_type" value="user" required> 
-        Esimies <br>
-        <input type="radio" name="user_type" value="admin" required> 
-        <input type="submit" value="Luo tunnus">
-    </form>
+    <div class="row" style="background-color: #f1f1f1;">
+        <div class="col">
+            <h3 style="text-align: center; padding-top: 20px;">Luo uusi käyttäjä</h3>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row" style="background-color: #f1f1f1;">
+        <div class="col">
+            <form action="/new_login" method="POST">
+                <label for="username">Käyttäjänimi:</label>
+                <input type="text" id="username" name="username" required pattern="[A-Za-z].{3,}" required>
+                <br>
+                <label for="password">Salasana:</label>
+                <input type="password" id="password" name="password" pattern="(?=.*[a-z])(?=.*\d).{4,}" required>
+                Käyttäjän tyyppi:<br>
+                <br>
+                Työntekijä <br>
+                <input type="radio" name="user_type" value="user" required> 
+                Esimies <br>
+                <input type="radio" name="user_type" value="admin" required> 
+                <button type="submit" class="btn btn-secondary" style="width: 100%;">Luo käyttäjä</button>
+            </form>
+        </div>
+        <div class="col">
+            <div id="name_message">
+                <h3>Käyttäjänimen <b>tulee</b> sisältää seuraava:</h3>
+                <p id="name_length" class="invalid">Vähintään neljä merkkiä</p>
+            </div>
+            <div id="message">
+                <h3>Salasanan <b>tulee</b> sisältää seuraavat:</h3>
+                <p id="letter" class="invalid">Pieni kirjain</p>
+                <p id="number" class="invalid">Ainakin yksi numero</p>
+                <p id="length" class="invalid">Vähintään neljä merkkiä</p>
+            </div>
+        </div>
+    </div>   
+    <div class="row">
+        <div class="col"></div>
+        <div class="col" style="text-align: right;">
+            <button type="button" class="btn btn-secondary" onclick="location.href='/'" style="width: 100px; font-size: large;">Palaa</button>
+        </div>
+    </div> 
 </div>
 
-<div id="name_message">
-    <h3>Käyttäjänimen tulee olla vähintään neljä merkkiä pitkä</h3>
-    <p id="name_length" class="invalid">Vähintään neljä merkkiä</p>
-</div>
-
-<div id="message">
-    <h3>Salsanan <b>tulee</b> sisältää seuraavat:</h3>
-    <p id="letter" class="invalid">Pieni kirjain</p>
-    <p id="number" class="invalid">Ainakin yksi numero</p>
-    <p id="length" class="invalid">Vähintään neljä merkkiä</p>
-</div>
 
 <script>
     var input = document.getElementById("password")
@@ -159,6 +185,4 @@
         }
     }
 </script>
-<button type="button" onclick="location.href='/'">Palaa</button>
-</body>
-</html>
+

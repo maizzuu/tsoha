@@ -1,4 +1,23 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<style>
+    body{
+        font-family: serif;
+    }
+    h1{
+        text-align: center;
+        background-color: rgb(4, 22, 60);
+        background-size: cover;
+        padding-bottom: 15px;
+        padding-top: 15px;
+        color: rgb(255, 255, 255);
+    }
+    .container{
+        text-align: center;
+        font-size: 20px;
+        padding: 20px;
+    }
+</style>
 <script>
     function sent() {
         alert("Ehdotus lähetetty!");
@@ -6,14 +25,36 @@
 </script>
 
 <title>Ota vuoro</title>
-Pakolliset kohdat merkitty tähdellä. <br>
-<form action="/send_give" method="POST" onsubmit="sent()">
-Päivämäärä: * <input type="date" id="date" name="date" min="{{ today }}" required> Jos käytät safaria, syötä päivämäärä muodossa vvvv-mm-dd.
-<br>
-Kommentti: <br>
-<textarea name="comment" rows="3" cols="40"></textarea> 
-<br>
-<input type="submit" value="Lähetä">
-</form>
-<br>
-<button type="button" onclick="location.href='/give'">Peruuta</button>
+
+<h1 onclick="location.href='/'">Vuoronvaihtosovellus</h1>
+
+<div class="container">
+    <div class="row" style="background-color: #f1f1f1; padding-top: 20px;">
+        <div class="col" style="text-align: center;"><h3 style="text-align: center;">Syötä tiedot:</h3></div>
+    </div>
+    <div class="row" style="background-color: #f1f1f1;">
+        <div class="col" style="text-align: center;">
+            <p style="font-size: small;"> Pakolliset kohdat merkitty tähdellä. </p>
+            <form action="/send_give" method="POST" onsubmit="sent()">
+            Päivämäärä: * <br>
+            <input type="date" id="date" name="date" min="{{ today }}" required> 
+            <br>
+            <p style="font-size: small;">Jos käytät safaria, syötä päivämäärä muodossa vvvv-mm-dd.</p>
+            Kommentti: <br>
+            <textarea name="comment" rows="3" cols="40"></textarea> 
+            <br>
+            <br>
+            <button type="submit" class="btn btn-secondary">Lähetä</button> 
+            </form>
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" style="text-align: right;">
+            <button type="button" class="btn btn-secondary" onclick="location.href='/give'">Peruuta</button>
+        </div>
+    </div>
+</div>
+
+
+

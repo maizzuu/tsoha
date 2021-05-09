@@ -1,4 +1,23 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<style>
+    body{
+        font-family: serif;
+    }
+    h1{
+        text-align: center;
+        background-color: rgb(4, 22, 60);
+        background-size: cover;
+        padding-bottom: 15px;
+        padding-top: 15px;
+        color: rgb(255, 255, 255);
+    }
+    .container{
+        text-align: center;
+        font-size: 20px;
+        padding: 20px;
+    }
+</style>
 <script>
     function sent() {
         alert("Ehdotus lähetetty!");
@@ -6,20 +25,45 @@
 </script>
 
 <title>Anna vuoro pois</title>
-Pakolliset kohdat merkitty tähdellä. <br>
-<form action="/send_take" method="POST" onsubmit="sent()">
-    Päivämäärä: * <input type="date" id="date" name="date" min="{{ today }}" required> Jos käytät safaria, syötä päivämäärä muodossa vvvv-mm-dd.
-    <br>
-    Alkamisaika: * <input type="text" name="start_time" value="" size="20" required> Muodossa hh:mm
-    <br>
-    Loppumisaika: * <input type="text" name="end_time" value="" size="20" required> Muodossa hh:mm
-    <br>
-    Työpiste: <input type="text" name="post" value="" size="20">
-    <br>
-    Kommentti: <br>
-    <textarea name="comment" rows="3" cols="40"></textarea> 
-    <br>
-    <input type="submit" value="Lähetä">
-</form>
-<br>
-<button type="button" onclick="location.href='/take'">Peruuta</button>
+
+<h1 onclick="location.href='/'">Vuoronvaihtosovellus</h1>
+
+<div class="container">
+    <div class="row" style="background-color: #f1f1f1; padding-top: 20px;">
+        <div class="col" style="text-align: center;"><h3>Syötä tiedot:</h3></div>
+    </div>
+    <div class="row" style="background-color: #f1f1f1; padding-bottom: 20px;">
+        <div class="col" style="text-align: center;">
+            <p style="font-size: small;">Pakolliset kohdat merkitty tähdellä.</p>
+            <form action="/send_take" method="POST" onsubmit="sent()">
+            Päivämäärä: * <br>
+            <input type="date" id="date" name="date" min="{{ today }}" required> <br>
+            <p style="font-size: small;">Jos käytät safaria, syötä päivämäärä muodossa vvvv-mm-dd.</p>
+
+            Alkamisaika: * <br>
+            <input type="text" name="start_time" value="" size="20" required> 
+            <p style="font-size: small;">Muodossa hh:mm</p>
+     
+            Loppumisaika: * <br>
+            <input type="text" name="end_time" value="" size="20" required>
+            <p style="font-size: small;">Muodossa hh:mm</p>
+
+            Työpiste: <br>
+            <input type="text" name="post" value="" size="10">
+            <p></p>
+
+            <p>Kommentti:<br>
+                <textarea name="comment" rows="2" cols="30"></textarea> 
+            </p>
+            <button type="submit" class="btn btn-secondary" style="width: 150px;">Lähetä</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" style="text-align: right;">
+            <button type="button" onclick="location.href='/take'" class="btn btn-secondary">Peruuta</button>
+        </div>
+    </div>
+</div>
+
+

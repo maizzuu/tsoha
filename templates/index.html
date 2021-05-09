@@ -108,12 +108,10 @@
 </div>
 
 {% else %}
-<div class="container">
+<div class="container" style="background-color: #f1f1f1; padding: 30px;">
     <div class="row">
-        <div class="col"><br><br><br></div>
-    </div>
-    <div class="row">
-        <div class="col" style="font-size: 17px;">
+        <div class="col" style="font-size: 20px;">
+            <h3>Kirjaudu sisään</h3>
             <form action="/login" method="POST">
                 <p>Käyttäjätunnus:<br>
                 <input type="text" name="username"></p>
@@ -125,8 +123,8 @@
             </form>
         </div>
         <div class="col">
-            <h4>Tervetuloa Airpron vuoronvaihtosovellukseen!</h4><br>
-            <p style="font-size: 17px;">
+            <h3>Tervetuloa Airpron vuoronvaihtosovellukseen!</h4><br>
+            <p style="font-size: 20px;">
                 Täällä voit vaihtaa vuoroja työkavereiden kanssa ja <br>
                 antaa omia vuoroja pois. Voit myös pyytää itsellesi <br>
                 lisää vuoroja ja ottaa toisten tarjoamia vuoroja.
